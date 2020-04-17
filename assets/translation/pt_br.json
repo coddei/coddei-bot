@@ -35,6 +35,11 @@
             "error_content_1": "Você não passou nenhum comando para recarregar",
             "error_content_2": "Não há comando com esse nome",
             "error_content_3": "Houve um erro ao recarregar o comando"
+        },
+        "avatar": {
+            "description": "Posta sua foto de perfil ou de um usuário específico",
+            "usage": "@usuário",
+            "error_content_1": "Você não passou um usuário válido"
         }
     }
 }
