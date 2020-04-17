@@ -1,0 +1,40 @@
+{
+    "index": {
+        "console_login": "Logado como",
+        "error_execute_command": "Houve um erro ao executar o comando!",
+        "error_dm_command": "Não posso executar esse comando em uma DM!",
+        "error_missing_args": "Você não passou nenhum valor",
+        "response_missing_args": "O uso correto do comando é:",
+        "response_cooldown_1": "por favor espere",
+        "response_cooldown_2": "segundo(s) antes de usar o comando",
+        "response_cooldown_3": "de novo."
+    },
+    "commands": {
+        "help": {
+            "description": "Lista todos os comandos ou mostra detalhes sobre um comando específico.",
+            "usage": "[nome do comando]",
+            "message_content_1": "Aqui, uma lista com todos os meus comandos:",
+            "message_content_2": "Você pode usar",
+            "message_content_3": "para mais detalhes de um comando específico!",
+            "response_content_1": "Te mandei uma DM com todos os meus comandos!",
+            "response_content_2": "**Nome**:",
+            "response_content_3": "**Outros Nomes**:",
+            "response_content_4": "**Descrição**:",
+            "response_content_5": "**Uso**:",
+            "response_content_6": "**Tempo de Cooldown**:",
+            "response_content_7": "segundo(s)",
+            "error_content_1": "parece que eu não posso enviar uma DM para você! Sua DM está ativa?",
+            "error_content_2": "isso não é um comando válido!",
+            "console_content_1": "Não pude mandar uma DM de help para"
+        },
+        "reload": {
+            "description": "Recarrega um comando",
+            "usage": "[nome do comando]",
+            "response_content_1": "O comando",
+            "response_content_2": "foi recarregado!",
+            "error_content_1": "Você não passou nenhum comando para recarregar",
+            "error_content_2": "Não há comando com esse nome",
+            "error_content_3": "Houve um erro ao recarregar o comando"
+        }
+    }
+}

@@ -1,0 +1,14 @@
+{
+  "name": "coddeibot",
+  "version": "0.0.1",
+  "description": "Discord bot for Coddei discord server.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "azanbertre",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^12.1.1"
+  }
+}
