@@ -21,6 +21,13 @@ const data = translateData.index;
 
 client.on("ready", () => {
     console.log(`${data.console_login} ${client.user.tag}!`);
+
+    client.user.setPresence({
+        status: "online",
+        activity: {
+            "name": "!help | coddei.com"
+        }
+    })
 });
 
 client.on("message", message => {
