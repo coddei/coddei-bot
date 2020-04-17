@@ -39,7 +39,8 @@
         "avatar": {
             "description": "Posta sua foto de perfil ou de um usuário específico",
             "usage": "@usuário",
-            "error_content_1": "Você não passou um usuário válido"
+            "error_content_1": "Você não passou um usuário válido",
+            "error_content_2": "Apenas 1 por vez, por favor :)"
         }
     }
 }

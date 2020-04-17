@@ -17,8 +17,12 @@ module.exports = {
             return message.channel.send(attachment);
         }
 
-        if (!message.mentions.users.length) {
+        if (!message.mentions.users.size) {
             return message.reply(content.error_content_1)
+        }
+
+        if (message.mentions.users.size > 1) {
+            return message.reply(content.error_content_2)
         }
 
         const taggedUser = message.mentions.users.first();
