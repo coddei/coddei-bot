@@ -11,6 +11,7 @@
     },
     "commands": {
         "help": {
+            "name": "help",
             "description": "Lista todos os comandos ou mostra detalhes sobre um comando específico.",
             "usage": "[nome do comando]",
             "message_content_1": "Aqui, uma lista com todos os meus comandos:",
@@ -28,6 +29,7 @@
             "console_content_1": "Não pude mandar uma DM de help para"
         },
         "reload": {
+            "name": "reload",
             "description": "Recarrega um comando",
             "usage": "[nome do comando]",
             "response_content_1": "O comando",
@@ -37,6 +39,7 @@
             "error_content_3": "Houve um erro ao recarregar o comando"
         },
         "avatar": {
+            "name": "avatar",
             "description": "Posta sua foto de perfil ou de um usuário específico",
             "usage": "@usuário",
             "error_content_1": "Você não passou um usuário válido",

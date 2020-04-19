@@ -10,14 +10,14 @@ const client = new Discord.Client();
 const cooldowns = new Discord.Collection();
 client.commands = new Discord.Collection();
 
+const translateData = getTranslateData();
+const data = translateData.index;
+
 const commandFiles = fs.readdirSync("src/commands").filter(file => file.endsWith(".js"));
 for (const file of commandFiles) {
 	const command = require(`./commands/${file}`);
-	client.commands.set(command.name, command);
+	client.commands.set(find(command.name, translateData), command);
 }
-
-const translateData = getTranslateData();
-const data = translateData.index;
 
 client.on("ready", () => {
     console.log(`${data.console_login} ${client.user.tag}!`);
@@ -45,20 +45,22 @@ client.on("message", message => {
         return message.reply(data.error_dm_command);
     }
 
+    const commandNameTranslated = find(command.name, translateData);
+
     if (command.args && !args.length) {
         let reply = `${data.error_missing_args}, ${message.author}!`;
         if (command.usage) {
-        	reply += `\n${data.response_missing_args} \`${prefix}${command.name} ${find(command.usage, translateData)}\``;
+        	reply += `\n${data.response_missing_args} \`${prefix}${commandNameTranslated} ${find(command.usage, translateData)}\``;
         }        
         return message.channel.send(reply);
     }
 
-    if (!cooldowns.has(command.name)) {
-        cooldowns.set(command.name, new Discord.Collection());
+    if (!cooldowns.has(commandNameTranslated)) {
+        cooldowns.set(commandNameTranslated, new Discord.Collection());
     }
     
     const now = Date.now();
-    const timestamps = cooldowns.get(command.name);
+    const timestamps = cooldowns.get(commandNameTranslated);
     const cooldownAmount = (command.cooldown || 3) * 1000;
     
     if (timestamps.has(message.author.id)) {
@@ -66,7 +68,7 @@ client.on("message", message => {
 
         if (now < expirationTime) {
             const timeLeft = (expirationTime - now) / 1000;
-            return message.reply(`${data.response_cooldown_1} ${timeLeft.toFixed(1)} ${data.response_cooldown_2} \`${command.name}\` ${data.response_cooldown_3}`);
+            return message.reply(`${data.response_cooldown_1} ${timeLeft.toFixed(1)} ${data.response_cooldown_2} \`${commandNameTranslated}\` ${data.response_cooldown_3}`);
         }
     } else {
         timestamps.set(message.author.id, now);
