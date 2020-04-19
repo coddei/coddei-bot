@@ -19,10 +19,11 @@ module.exports = {
 
         const commandNameTranslated = find(command.name, client.translateData);
 
-        delete require.cache[require.resolve(`./${commandNameTranslated}.js`)];
-
         try {
-            const newCommand = require(`./${commandNameTranslated}.js`);
+            const jsCommandName = command.name.split(".")[1];
+            delete require.cache[require.resolve(`./${jsCommandName}.js`)];
+
+            const newCommand = require(`./${jsCommandName}.js`);
             message.client.commands.set(find(newCommand.name, client.translateData), newCommand);
         } catch (error) {
             console.log(error);

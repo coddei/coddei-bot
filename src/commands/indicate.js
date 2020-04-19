@@ -3,6 +3,7 @@ const { MessageEmbed } = require('discord.js');
 module.exports = {
     name: "commands.indicate.name",
     description: "commands.indicate.description",
+    aliases: ["indicate"],
     usage: "commands.indicate.usage",
     cooldown: 20,
 	execute(client, message, args) {
@@ -13,11 +14,11 @@ module.exports = {
             const warningEmbed = new MessageEmbed()
                 .setColor("#0072FF")
                 .setTitle(content.response_content_1)
-                .setDescription(`${client.prefix}${content.name} ${content.usage}`)
+                .setDescription(`**${client.prefix}${content.name}** ${content.usage}`)
                 .addFields(
                     {name: "\u200B", value: `${content.response_content_2}`}
                 )
-                .setFooter(getYear() + ' © Coddei', 'https://i.imgur.com/jBdy5Zf.png');
+                .setFooter(client.year + " © Coddei", "https://i.imgur.com/jBdy5Zf.png");
             return message.reply(warningEmbed);
         }
 
