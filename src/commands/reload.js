@@ -1,3 +1,5 @@
+const { find } = require("../utils");
+
 module.exports = {
     name: "commands.reload.name",
     admin: true,

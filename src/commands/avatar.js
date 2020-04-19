@@ -1,4 +1,4 @@
-const { MessageAttachment } = require('discord.js')
+const { MessageAttachment } = require('discord.js');
 
 module.exports = {
     name: "commands.avatar.name",
