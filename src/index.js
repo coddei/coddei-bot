@@ -75,7 +75,7 @@ client.on("message", message => {
 });
 
 client.on("guildMemberAdd", member => {
-    role = member.guild.roles.find(role => role.name == defaultRole);
+    role = member.guild.roles.cache.find(role => role.name == defaultRole);
     member.roles.add(role);
 });
 
