@@ -50,7 +50,13 @@
             "description": "Indica um link, curso ou livro",
             "usage": "<título> <link> <descrição>",
             "response_content_1": "Para fazer uma indicação:",
-            "response_content_2": "**Título**: 'Nome do Curso/Livro/Arquivo'\n**Link**: 'Link para o Curso/Livro/Arquivo'\n**Descrição**: 'Sinopse do Curso/Livro/Arquivo, linguagem usada, etc.'"
+            "response_content_2": "**Título**: 'Nome do Curso/Livro/Arquivo'\n**Link**: 'Link para o Curso/Livro/Arquivo'\n**Descrição**: 'Sinopse do Curso/Livro/Arquivo, linguagem usada, etc.'",
+            "response_content_3": "Indicação",
+            "response_content_4": "**Título:**",
+            "response_content_5": "**Link:**",
+            "response_content_6": "**Descrição:**",
+            "error_content_1": "você não passou os argumentos corretos",
+            "error_content_2": "o link que você passou não é válido"
         }
     }
 }

@@ -1,6 +1,7 @@
 const fs = require("fs");
 
 const Discord = require("discord.js");
+const axios = require('axios')
 
 const { prefix, token, defaultRole } = require("../config.json");
 const { getYear, find, getTranslateData } = require("./utils");
@@ -15,6 +16,7 @@ client.commands = new Discord.Collection();
 client.year = getYear();
 client.translateData = translateData;
 client.prefix = prefix;
+client.axios = axios;
 
 const commandFiles = fs.readdirSync("src/commands").filter(file => file.endsWith(".js"));
 for (const file of commandFiles) {
