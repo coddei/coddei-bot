@@ -1,7 +1,7 @@
 const { MessageAttachment } = require('discord.js')
 
 module.exports = {
-    name: "avatar",
+    name: "commands.avatar.name",
     aliases: ["pfp", "icon"],
     description: "commands.avatar.description",
     usage: "commands.avatar.usage",

@@ -2,7 +2,7 @@ const { prefix } = require("../../config.json");
 const { find } = require("../utils");
 
 module.exports = {
-	name: "help",
+	name: "commands.help.name",
 	description: "commands.help.description",
 	aliases: ["commands"],
     usage: "commands.help.usage",
@@ -15,7 +15,7 @@ module.exports = {
 
         if (!args.length) {
             response.push(content.message_content_1);
-            response.push(commands.map(command => { if (!command.admin) return command.name; }).join(", "));
+            response.push(commands.map(command => { if (!command.admin) return find(command.name, data); }).join(", "));
             response.push(`\n${content.message_content_2} \`${prefix}help ${content.usage}\` ${content.message_content_3}`);
             
             return message.author.send(response, { split: true })
@@ -36,11 +36,11 @@ module.exports = {
             return message.reply(content.error_content_2);
         }
 
-        response.push(`${content.response_content_2} ${command.name}`);
+        response.push(`${content.response_content_2} ${find(command.name, data)}`);
 
         if (command.aliases) response.push(`${content.response_content_3} ${command.aliases.join(", ")}`);
         if (command.description) response.push(`${content.response_content_4} ${find(command.description, data)}`);
-        if (command.usage) response.push(`${content.response_content_5} ${prefix}${command.name} ${find(command.usage, data)}`);
+        if (command.usage) response.push(`${content.response_content_5} ${prefix}${find(command.name, data)} ${find(command.usage, data)}`);
 
         response.push(`${content.response_content_6} ${command.cooldown || 3} ${content.response_content_7}`);
 

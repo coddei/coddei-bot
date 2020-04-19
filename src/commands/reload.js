@@ -1,5 +1,5 @@
 module.exports = {
-    name: "reload",
+    name: "commands.reload.name",
     admin: true,
     args: true,
     description: "commands.reload.description",
@@ -15,16 +15,18 @@ module.exports = {
         
         if (!command) return message.channel.send(`${content.error_content_2} \`${commandName}\`, ${message.author}!`);
 
-        delete require.cache[require.resolve(`./${command.name}.js`)];
+        const commandNameTranslated = find(command.name, data);
+
+        delete require.cache[require.resolve(`./${commandNameTranslated}.js`)];
 
         try {
-            const newCommand = require(`./${command.name}.js`);
-            message.client.commands.set(newCommand.name, newCommand);
+            const newCommand = require(`./${commandNameTranslated}.js`);
+            message.client.commands.set(find(newCommand.name, data), newCommand);
         } catch (error) {
             console.log(error);
-            message.channel.send(`${content.error_content_3} \`${command.name}\`:\n\`${error.message}\``);
+            message.channel.send(`${content.error_content_3} \`${commandNameTranslated}\`:\n\`${error.message}\``);
         }
 
-        message.channel.send(`${content.response_content_1} \`${command.name}\` ${content.response_content_2}`);
+        message.channel.send(`${content.response_content_1} \`${commandNameTranslated}\` ${content.response_content_2}`);
 	}
 };
