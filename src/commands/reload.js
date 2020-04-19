@@ -1,12 +1,14 @@
+const { find } = require("../utils");
+
 module.exports = {
     name: "commands.reload.name",
     admin: true,
     args: true,
     description: "commands.reload.description",
     usage: "commands.reload.usage",
-	execute(message, args, data) {
+	execute(client, message, args) {
 
-        const content = data.commands.reload;
+        const content = client.translateData.commands.reload;
 
         if (!args.length) return message.channel.send(`${content.error_content_1}, ${message.author}!`);
         const commandName = args[0].toLowerCase();
@@ -15,13 +17,14 @@ module.exports = {
         
         if (!command) return message.channel.send(`${content.error_content_2} \`${commandName}\`, ${message.author}!`);
 
-        const commandNameTranslated = find(command.name, data);
-
-        delete require.cache[require.resolve(`./${commandNameTranslated}.js`)];
+        const commandNameTranslated = find(command.name, client.translateData);
 
         try {
-            const newCommand = require(`./${commandNameTranslated}.js`);
-            message.client.commands.set(find(newCommand.name, data), newCommand);
+            const jsCommandName = command.name.split(".")[1];
+            delete require.cache[require.resolve(`./${jsCommandName}.js`)];
+
+            const newCommand = require(`./${jsCommandName}.js`);
+            message.client.commands.set(find(newCommand.name, client.translateData), newCommand);
         } catch (error) {
             console.log(error);
             message.channel.send(`${content.error_content_3} \`${commandNameTranslated}\`:\n\`${error.message}\``);

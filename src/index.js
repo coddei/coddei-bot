@@ -1,17 +1,22 @@
 const fs = require("fs");
 
 const Discord = require("discord.js");
+const axios = require('axios')
 
 const { prefix, token, defaultRole } = require("../config.json");
-const { find, getTranslateData } = require("./utils");
+const { getYear, find, getTranslateData } = require("./utils");
 
 const client = new Discord.Client();
 
-const cooldowns = new Discord.Collection();
-client.commands = new Discord.Collection();
-
 const translateData = getTranslateData();
 const data = translateData.index;
+
+const cooldowns = new Discord.Collection();
+client.commands = new Discord.Collection();
+client.year = getYear();
+client.translateData = translateData;
+client.prefix = prefix;
+client.axios = axios;
 
 const commandFiles = fs.readdirSync("src/commands").filter(file => file.endsWith(".js"));
 for (const file of commandFiles) {
@@ -76,7 +81,7 @@ client.on("message", message => {
     }
 
     try {
-        command.execute(message, args, translateData);
+        command.execute(client, message, args);
     } catch (error) {
         console.error(error);
         message.reply(data.error_execute_command);

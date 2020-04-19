@@ -1,4 +1,4 @@
-const { MessageAttachment } = require('discord.js')
+const { MessageAttachment } = require('discord.js');
 
 module.exports = {
     name: "commands.avatar.name",
@@ -6,9 +6,9 @@ module.exports = {
     description: "commands.avatar.description",
     usage: "commands.avatar.usage",
     cooldown: 5,
-	execute(message, args, data) {
+	execute(client, message, args) {
 
-        const content = data.commands.avatar;
+        const content = client.translateData.commands.avatar;
 
         if (!args.length) {
             const avatarUrl = message.author.displayAvatarURL();
