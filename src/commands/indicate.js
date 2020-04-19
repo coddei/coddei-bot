@@ -15,7 +15,10 @@ module.exports = {
             const warningEmbed = new MessageEmbed()
                 .setColor("#0072FF")
                 .setTitle(content.response_content_1)
-                .setDescription(`${prefix}${content.name} ${content.usage}\n\n${content.response_content_2}`)
+                .setDescription(`${prefix}${content.name} ${content.usage}`)
+                .addFields(
+                    {name: "\u200B", value: `${content.response_content_2}`}
+                )
                 .setFooter(getYear() + ' © Coddei', 'https://i.imgur.com/jBdy5Zf.png');
             return message.reply(warningEmbed);
         }
