@@ -8,14 +8,14 @@ module.exports = {
 	cooldown: 5,
 	execute(client, message, args) {
         const response = [];
-        const { commands } = message.client;
+        const { commands } = client;
         
         const content = client.translateData.commands.help;
 
         if (!args.length) {
             response.push(content.message_content_1);
             response.push(commands.map(command => { if (!command.admin) return find(command.name, client.translateData); }).join(", "));
-            response.push(`\n${content.message_content_2} \`${client.prefix}help ${content.usage}\` ${content.message_content_3}`);
+            response.push(`\n${content.message_content_2} \`${client.config.prefix}help ${content.usage}\` ${content.message_content_3}`);
             
             return message.author.send(response, { split: true })
                 .then(() => {

@@ -1,5 +1,4 @@
 const { MessageEmbed } = require("discord.js");
-const { materialsChannel } = require("../../config.json");
 
 module.exports = {
     name: "commands.indicate.name",
@@ -12,13 +11,13 @@ module.exports = {
         const content = client.translateData.commands.indicate;
 
         const infoEmbed = new MessageEmbed()
-            .setColor("#0072FF")
+            .setColor(client.config.accentColor)
             .setTitle(content.response_content_1)
-            .setDescription(`**${client.prefix}${content.name}** ${content.usage}`)
+            .setDescription(`**${client.config.prefix}${content.name}** ${content.usage}`)
             .addFields(
                 {name: "\u200B", value: `${content.response_content_2}`}
             )
-            .setFooter(client.year + " © Coddei", "https://i.imgur.com/jBdy5Zf.png");
+            .setFooter(client.config.year + " © Coddei", client.config.logoURL);
 
         if (!args.length) {
             return message.reply(infoEmbed);
@@ -44,18 +43,18 @@ module.exports = {
         }
 
         const postEmbed = new MessageEmbed()
-            .setColor("#0072FF")
+            .setColor(client.config.accentColor)
             .setTitle(`${content.response_content_3} » ${name}`)
             .addFields(
                 {name: content.response_content_4, value: title},
                 {name: content.response_content_5, value: link},
                 {name: content.response_content_6, value: description}
             )
-            .setFooter(client.year + " © Coddei", "https://i.imgur.com/jBdy5Zf.png")
+            .setFooter(client.config.year + " © Coddei", client.config.logoURL)
             .setTimestamp();
 
         try {
-            const channel = message.guild.channels.cache.find(channel => channel.id == materialsChannel);
+            const channel = client.guild.channels.cache.find(channel => channel.id == client.config.channels.materialsChannelID);
             channel.send(postEmbed);
         } catch (error) {
             console.log(error);

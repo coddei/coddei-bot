@@ -12,8 +12,8 @@ module.exports = {
 
         if (!args.length) return message.channel.send(`${content.error_content_1}, ${message.author}!`);
         const commandName = args[0].toLowerCase();
-        const command = message.client.commands.get(commandName)
-            || message.client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
+        const command = client.commands.get(commandName)
+            || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
         
         if (!command) return message.channel.send(`${content.error_content_2} \`${commandName}\`, ${message.author}!`);
 
@@ -24,7 +24,7 @@ module.exports = {
             delete require.cache[require.resolve(`./${jsCommandName}.js`)];
 
             const newCommand = require(`./${jsCommandName}.js`);
-            message.client.commands.set(find(newCommand.name, client.translateData), newCommand);
+            client.commands.set(find(newCommand.name, client.translateData), newCommand);
         } catch (error) {
             console.log(error);
             message.channel.send(`${content.error_content_3} \`${commandNameTranslated}\`:\n\`${error.message}\``);
