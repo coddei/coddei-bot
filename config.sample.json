@@ -1,6 +1,15 @@
 {
     "prefix": "!",
     "token": "",
-    "defaultRole": "",
+    "guildID": "",
+    "accentColor": "#0072FF",
+    "roles": {
+        "defaultRoleID": "",
+        "memberRoleID": ""
+    },
+    "channels": {
+        "materialsChannelID": "",
+        "newcomersChannelID": ""
+    },
     "language": "pt_br"
 }
