@@ -1,6 +1,7 @@
 {
     "index": {
         "console_login": "Logado como",
+        "console_no_guild": "O ID do servidor está errado",
         "error_execute_command": "Houve um erro ao executar o comando!",
         "error_dm_command": "Não posso executar esse comando em uma DM!",
         "error_missing_args": "Você não passou nenhum valor",
@@ -57,6 +58,12 @@
             "response_content_6": "**Descrição:**",
             "error_content_1": "você não passou os argumentos corretos",
             "error_content_2": "o link que você passou não é válido"
+        },
+        "register": {
+            "name": "registrar",
+            "description": "Faz o registro do usuário no servidor",
+            "response_content_1": "Registro",
+            "error_content_1": "Você já está registrado 😅"
         }
     }
 }
