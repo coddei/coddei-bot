@@ -22,7 +22,16 @@ Configurar os valores no arquivo.
 {
     "prefix": "prefixo do bot aqui. Ex: !",
     "token": "auth token do bot no Discord",
-    "defaultRole": "role padrão para novos usuários",
+    "guildID": "ID do servidor no Discord",
+    "accentColor": "#0072FF", // Cor usada em embeds
+    "roles": {
+        "defaultRoleID": "ID da role padrão para novos usuários",
+        "memberRoleID": "ID da role para usuário cadastrados"
+    },
+    "channels": {
+        "materialsChannelID": "ID do canal para materiais do comando !indicar",
+        "newcomersChannelID": "ID do canal de novos membros do comando !registrar"
+    },
     "language": "pt_br"
 }
 ```
