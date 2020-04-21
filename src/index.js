@@ -3,20 +3,24 @@ const fs = require("fs");
 const Discord = require("discord.js");
 const axios = require('axios')
 
-const { prefix, token, defaultRole } = require("../config.json");
 const { getYear, find, getTranslateData } = require("./utils");
 
-const client = new Discord.Client();
+const config = require("../config.json");
+const token = config.token;
+config.year = getYear();
+config.logoURL = "https://i.imgur.com/jBdy5Zf.png";
+delete config.token;
 
 const translateData = getTranslateData();
 const data = translateData.index;
 
+const client = new Discord.Client();
+
 const cooldowns = new Discord.Collection();
 client.commands = new Discord.Collection();
-client.year = getYear();
-client.translateData = translateData;
-client.prefix = prefix;
 client.axios = axios;
+client.config = config;
+client.translateData = translateData;
 
 const commandFiles = fs.readdirSync("src/commands").filter(file => file.endsWith(".js"));
 for (const file of commandFiles) {
@@ -25,6 +29,14 @@ for (const file of commandFiles) {
 }
 
 client.on("ready", () => {
+    const guild = client.guilds.cache.find(guild => guild.id == client.config.guildID);
+    if (!guild) {
+        console.log(data.console_no_guild);
+        client.destroy();
+        return;
+    }
+    client.guild = guild;
+
     console.log(`${data.console_login} ${client.user.tag}!`);
 
     client.user.setPresence({
@@ -37,9 +49,9 @@ client.on("ready", () => {
 
 client.on("message", message => {
 
-    if (!message.content.startsWith(prefix) || message.author.bot) return;
+    if (!message.content.startsWith(config.prefix) || message.author.bot) return;
 
-    const args = message.content.slice(prefix.length).split(/ +/);
+    const args = message.content.slice(config.prefix.length).split(/ +/);
     const commandName = args.shift().toLowerCase();
     const command = client.commands.get(commandName) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
     if (!command) return;
@@ -55,7 +67,7 @@ client.on("message", message => {
     if (command.args && !args.length) {
         let reply = `${data.error_missing_args}, ${message.author}!`;
         if (command.usage) {
-        	reply += `\n${data.response_missing_args} \`${prefix}${commandNameTranslated} ${find(command.usage, translateData)}\``;
+        	reply += `\n${data.response_missing_args} \`${config.prefix}${commandNameTranslated} ${find(command.usage, translateData)}\``;
         }        
         return message.channel.send(reply);
     }
@@ -89,7 +101,7 @@ client.on("message", message => {
 });
 
 client.on("guildMemberAdd", member => {
-    role = member.guild.roles.cache.find(role => role.name == defaultRole);
+    role = member.guild.roles.cache.find(role => role.id == config.roles.defaultRole);
     member.roles.add(role);
 });
 
