@@ -63,7 +63,12 @@
             "name": "registrar",
             "description": "Faz o registro do usuário no servidor",
             "response_content_1": "Registro",
-            "error_content_1": "Você já está registrado 😅"
+            "error_content_1": "Você já está registrado 😅",
+            "register_name": "Seu Nome",
+            "register_portfolio": "Portfólio",
+            "register_github": "Github",
+            
+            "register_languages_description": "Selecione as reações das respectivas linguagens que você já sabe ou tem interesse em aprender 😄"
         }
     }
 }
