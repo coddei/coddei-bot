@@ -1,5 +1,13 @@
 
 const { MessageEmbed } = require("discord.js");
+const { find } = require("../utils");
+
+const levels = [
+    ["commands.register.register_english_beginner", "1⃣"],
+    ["commands.register.register_english_intermediate", "2⃣"],
+    ["commands.register.register_english_advanced", "3⃣"],
+    ["commands.register.register_english_fluent", "4⃣"]
+]
 
 const languageReactions = [
     ["Python", "1⃣"],
@@ -51,7 +59,7 @@ const collectReactions = (message, config, author, ms=60000, multiple=true) => {
                 collector.stop();
                 return;
             }
-            author.send(getEmbed(config, "Aceito"))
+            author.send(getMessageEmbed(config, "Aceito"))
         });
         collector.on("end", collected => {
             if (!collected.array().length) {
@@ -125,13 +133,34 @@ module.exports = {
             })
         }
         const languagesDescription = content.register_languages_description
-        const languagesMessage = await message.author.send(getMessageEmbed(client.config, "Linguagens", description=languagesDescription, fields=languagesFields))
+        const languagesMessage = await message.author.send(getMessageEmbed(client.config, content.register_languages, description=languagesDescription, fields=languagesFields))
         for (reaction of languageReactions) {
             await languagesMessage.react(reaction[1]);
         }
         await languagesMessage.react(finishReaction);
+        const languageReactionsResponse = await collectReactions(languagesMessage, client.config, message.author, ms=120000);
+        const languages = languageReactions.filter((el) => languageReactionsResponse.includes(el[1])).map((el) => el[0])
 
-        const languageReactionsResponse = await collectReactions(message, client.config, message.author, ms=120000);
+        var levelFields = []
+        for (level of levels) {
+            levelFields.push({
+                name: find(level[0], client.translateData),
+                value: level[1],
+                inline: true
+            })
+        }
+        const englishDescription = content.register_english_description
+        const englishMessage = await message.author.send(getMessageEmbed(client.config, content.register_english, description=englishDescription, fields=levelFields))
+        for (level of levels) {
+            await englishMessage.react(level[1]);
+        }        
+        const englishReactionsResponse = await collectReactions(englishMessage, client.config, message.author, ms=120000, multiple=false);
+        const lvl = find(levels.filter((el) => englishReactionsResponse.includes(el[1])).map((el) => el[0])[0], client.translateData)
+
+
+        var desc = `Seus dados são: \nNome: ${nameResponse}\nPortfólio: ${portfolioResponse}\nGithub: ${githubResponse}\nLinguagens: ${languages.join(",")}\nInglês: ${find(lvl, client.translateData)}`
+        await message.author.send(getMessageEmbed(client.config, "Resultado", description=desc))
+
 
 	}
 };
