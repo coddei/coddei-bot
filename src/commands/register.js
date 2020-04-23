@@ -2,6 +2,20 @@
 const { MessageEmbed } = require("discord.js");
 const { find } = require("../utils");
 
+class CommandUseError extends Error {
+    constructor(message) {
+        super(message);
+        this.name = this.constructor.name;
+    }
+}
+
+class TimeoutError extends Error {
+    constructor(message) {
+        super(message);
+        this.name = this.constructor.name;
+    }
+}
+
 const levels = [
     ["commands.register.register_english_beginner", "1⃣"],
     ["commands.register.register_english_intermediate", "2⃣"],
@@ -35,13 +49,13 @@ const collectMessage = (message, config, ms=60000) => {
         );
         collector.on("collect", m => {
             if (m.content.startsWith(config.prefix) || m.author.bot) {
-                return reject();
+                return reject(new CommandUseError);
             }
             collector.stop();
         });
         collector.on("end", collected => {
             if (!collected.array().length) {
-                return reject();
+                return reject(new TimeoutError);
             }
             return resolve(collected.last().content);
         });
@@ -70,10 +84,13 @@ const collectReactions = (message, config, author, ms=60000, multiple=true) => {
     });
 }
 
-const getMessageEmbed = (config, title, description="", fields=[]) => {
+const getMessageEmbed = (config, title, description="", fields=[], error=false) => {
+
+    var color = config.accentColor;
+    if (error) color = config.errorColor;
 
     const embed = {
-        color: config.accentColor,
+        color: color,
         title: title
     }
 
@@ -115,14 +132,35 @@ module.exports = {
 
         await message.author.send(registerEmbed);
 
+        var cancelRegister = false;
+
         await message.author.send(getMessageEmbed(client.config, content.register_name))
-        const nameResponse = await collectMessage(message, client.config, 120000);
+        const nameResponse = await collectMessage(message, client.config, 5000)
+            .catch((e) => {
+                if (e instanceof CommandUseError) message.author.send(getMessageEmbed(client.config, content.error, description=content.error_command_use, fields=[], error=true));
+                else if (e instanceof TimeoutError) message.author.send(getMessageEmbed(client.config, content.error, description=content.error_timeout, fields=[], error=true));
+                cancelRegister = true;
+            });
+
+        if (cancelRegister) return;
 
         await message.author.send(getMessageEmbed(client.config, content.register_portfolio))
-        const portfolioResponse = await collectMessage(message, client.config);
+        const portfolioResponse = await collectMessage(message, client.config)
+            .catch((e) => {
+                message.author.send(getMessageEmbed(client.config, content.error, description=content.error_timeout, fields=[], error=true));
+                cancelRegister = true;
+            });
+
+        if (cancelRegister) return;
 
         await message.author.send(getMessageEmbed(client.config, content.register_github))
-        const githubResponse = await collectMessage(message, client.config);
+        const githubResponse = await collectMessage(message, client.config)
+            .catch((e) => {
+                message.author.send(getMessageEmbed(client.config, content.error, description=content.error_timeout, fields=[], error=true));
+                cancelRegister = true;
+            });
+
+        if (cancelRegister) return;
 
         var languagesFields = []
         for (reaction of languageReactions) {
@@ -138,8 +176,15 @@ module.exports = {
             await languagesMessage.react(reaction[1]);
         }
         await languagesMessage.react(finishReaction);
-        const languageReactionsResponse = await collectReactions(languagesMessage, client.config, message.author, ms=120000);
-        const languages = languageReactions.filter((el) => languageReactionsResponse.includes(el[1])).map((el) => el[0])
+        const languageReactionsResponse = await collectReactions(languagesMessage, client.config, message.author, ms=120000)
+            .catch((e) => {
+                message.author.send(getMessageEmbed(client.config, content.error, description=content.error_timeout, fields=[], error=true));
+                cancelRegister = true;
+            });
+
+        if (cancelRegister) return;
+
+        const languages = languageReactions.filter((el) => languageReactionsResponse.includes(el[1])).map((el) => el[0]);
 
         var levelFields = []
         for (level of levels) {
@@ -154,11 +199,17 @@ module.exports = {
         for (level of levels) {
             await englishMessage.react(level[1]);
         }        
-        const englishReactionsResponse = await collectReactions(englishMessage, client.config, message.author, ms=120000, multiple=false);
+        const englishReactionsResponse = await collectReactions(englishMessage, client.config, message.author, ms=120000, multiple=false)
+            .catch((e) => {
+                message.author.send(getMessageEmbed(client.config, content.error, description=content.error_timeout, fields=[], error=true));
+                cancelRegister = true;
+            });
+
+        if (cancelRegister) return;
+
         const lvl = find(levels.filter((el) => englishReactionsResponse.includes(el[1])).map((el) => el[0])[0], client.translateData)
 
-
-        var desc = `Seus dados são: \nNome: ${nameResponse}\nPortfólio: ${portfolioResponse}\nGithub: ${githubResponse}\nLinguagens: ${languages.join(",")}\nInglês: ${find(lvl, client.translateData)}`
+        var desc = `Seus dados são: \nNome: ${nameResponse}\nPortfólio: ${portfolioResponse}\nGithub: ${githubResponse}\nLinguagens: ${languages.join(",")}\nInglês: ${lvl}}`
         await message.author.send(getMessageEmbed(client.config, "Resultado", description=desc))
 
 
