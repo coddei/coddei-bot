@@ -61,6 +61,7 @@
         },
         "register": {
             "error": "Erro",
+            "profile": "Perfil",
             "name": "registrar",
             "description": "Faz o registro do usuário no servidor",
             "response_content_1": "Registro",
@@ -70,9 +71,20 @@
             "error_command_use": "Hm, parece que você está tentando usar um comando? O registro foi cancelado, você pode tentar de novo mas dessa vez vamos deixar os comandos para depois do registro ok? 🙂",
 
             "register_name": "Seu Nome",
+            "register_nick": "Seu Nick",
+            "register_bio": "Bio",
+            "register_bio_description": "Fale um pouco sobre sua experiência e suas expectativas",
             "register_portfolio": "Portfólio",
             "register_github": "Github",
             "register_languages": "Linguagens",
+
+            "field_bio": "Bio",
+            "field_name": "Nome",
+            "field_nick": "Nickname",
+            "field_portfolio": "Portfólio",
+            "field_github": "Github",
+
+            "reaction_accept": "Linguagem adicionada 😎",
             
             "register_languages_description": "Selecione as reações das respectivas linguagens que você já sabe ou tem interesse em aprender 😄. Depois de selecionar as linguagens, clique no ☑️ para continuar. Esperar as reações carregarem por favor.",
             

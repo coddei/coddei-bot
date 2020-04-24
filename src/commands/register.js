@@ -16,29 +16,6 @@ class TimeoutError extends Error {
     }
 }
 
-const levels = [
-    ["commands.register.register_english_beginner", "1⃣"],
-    ["commands.register.register_english_intermediate", "2⃣"],
-    ["commands.register.register_english_advanced", "3⃣"],
-    ["commands.register.register_english_fluent", "4⃣"]
-]
-
-const languageReactions = [
-    ["Python", "1⃣"],
-    ["Javascript", "2⃣"],
-    ["Typescript", "3⃣"],
-    ["Java", "4⃣"],
-    ["Kotlin", "5⃣"],
-    ["Swift", "6⃣"],
-    ["PHP", "7⃣"],
-    ["C#", "8⃣"],
-    ["C & C++", "9⃣"],
-    ["Lua", "🔟"],
-    ["SQL", "🇦"],
-    ["NoSQL", "🇧"],
-    ["UI & UX", "🇨"]
-];
-
 const finishReaction = "☑️";
 
 const collectMessage = (message, config, ms=60000) => {
@@ -62,7 +39,7 @@ const collectMessage = (message, config, ms=60000) => {
     });
 };
 
-const collectReactions = (message, config, author, ms=60000, multiple=true) => {
+const collectReactions = (message, client, author, ms=60000, multiple=true) => {
     return new Promise((resolve, reject) => {
         const collector = message.createReactionCollector(
             (r, u) => u.id === author.id,
@@ -73,7 +50,7 @@ const collectReactions = (message, config, author, ms=60000, multiple=true) => {
                 collector.stop();
                 return;
             }
-            author.send(getMessageEmbed(config, "Aceito"))
+            author.send(getMessageEmbed(client.config, client.translateData.commands.register.reaction_accept))
         });
         collector.on("end", collected => {
             if (!collected.array().length) {
@@ -84,7 +61,25 @@ const collectReactions = (message, config, author, ms=60000, multiple=true) => {
     });
 }
 
-const getMessageEmbed = (config, title, description="", fields=[], error=false) => {
+const getCollectedMessage = async (message, config, text, timeoutText, errorText, timeout=60000, description="") => {
+    await message.author.send(getMessageEmbed(config, text, description))
+
+    var error = false;
+    const response = await collectMessage(message, config, timeout)
+        .catch((e) => {
+            if (e instanceof CommandUseError) message.author.send(getMessageEmbed(config, errorText, description="", fields=[], error=true));
+            else if (e instanceof TimeoutError) message.author.send(getMessageEmbed(config, timeoutText, description="", fields=[], error=true));
+            error = true;
+        });
+
+    if (error) {
+        return new Error();
+    }
+
+    return response;
+}
+
+const getMessageEmbed = (config, title, description="", fields=[], error=false, footer=false) => {
 
     var color = config.accentColor;
     if (error) color = config.errorColor;
@@ -102,6 +97,13 @@ const getMessageEmbed = (config, title, description="", fields=[], error=false) 
         embed.fields = fields;
     }
 
+    if (footer) {
+        embed.footer = {
+            text: config.year + " © Coddei",
+            icon_url: config.logoURL
+        }
+    }
+
     return {embed: embed}
 }
 
@@ -112,106 +114,84 @@ module.exports = {
 	execute: async (client, message, args) => {
 
         const content = client.translateData.commands.register;
+        const config = client.config;
 
-        if (client.guild.roles.cache.find(role => role.id == client.config.memberRoleID)) {
-
-            const registeredEmbed = new MessageEmbed()
-                .setColor(client.config.accentColor)
-                .setTitle(content.error_content_1)
-                .setFooter(client.config.year + " © Coddei", client.config.logoURL);
-
-            return message.reply(registeredEmbed);
+        if (client.guild.roles.cache.find(role => role.id == config.memberRoleID)) {
+            return message.reply(getMessageEmbed(config, content.error_content_1, "", [], false, true));
         }
 
-        const registerEmbed = new MessageEmbed()
-            .setColor(client.config.accentColor)
-            .setTitle(content.response_content_1)
-            .setFooter(client.config.year + " © Coddei", client.config.logoURL);
+        // Register message
+        await message.author.send(getMessageEmbed(config, content.response_content_1, "", [], false, true));
 
+        const timeoutErrorText = content.error_timeout;
+        const commandErrorText = content.error_command_use;
         const data = {}
 
-        await message.author.send(registerEmbed);
+        data.name = await getCollectedMessage(message, config, content.register_name, timeoutErrorText, commandErrorText, 120000);
+        if (data.name instanceof Error) return;
+        
+        data.nick = await getCollectedMessage(message, config, content.register_nick, timeoutErrorText, commandErrorText);
+        if (data.nick instanceof Error) return
+        
+        data.bio = await getCollectedMessage(message, config, content.register_bio, timeoutErrorText, commandErrorText, 180000, content.register_bio_description);
+        if (data.bio instanceof Error) return;
+        
+        data.portfolio = await getCollectedMessage(message, config, content.register_portfolio, timeoutErrorText, commandErrorText);
+        if (data.portfolio instanceof Error) return;
 
-        var cancelRegister = false;
-
-        await message.author.send(getMessageEmbed(client.config, content.register_name))
-        const nameResponse = await collectMessage(message, client.config, 5000)
-            .catch((e) => {
-                if (e instanceof CommandUseError) message.author.send(getMessageEmbed(client.config, content.error, description=content.error_command_use, fields=[], error=true));
-                else if (e instanceof TimeoutError) message.author.send(getMessageEmbed(client.config, content.error, description=content.error_timeout, fields=[], error=true));
-                cancelRegister = true;
-            });
-
-        if (cancelRegister) return;
-
-        await message.author.send(getMessageEmbed(client.config, content.register_portfolio))
-        const portfolioResponse = await collectMessage(message, client.config)
-            .catch((e) => {
-                message.author.send(getMessageEmbed(client.config, content.error, description=content.error_timeout, fields=[], error=true));
-                cancelRegister = true;
-            });
-
-        if (cancelRegister) return;
-
-        await message.author.send(getMessageEmbed(client.config, content.register_github))
-        const githubResponse = await collectMessage(message, client.config)
-            .catch((e) => {
-                message.author.send(getMessageEmbed(client.config, content.error, description=content.error_timeout, fields=[], error=true));
-                cancelRegister = true;
-            });
-
-        if (cancelRegister) return;
+        data.github = await getCollectedMessage(message, config, content.register_github, timeoutErrorText, commandErrorText);
+        if (data.github instanceof Error) return;
 
         var languagesFields = []
-        for (reaction of languageReactions) {
+        for (language of config.roles.languageRoles) {
             languagesFields.push({
-                name: reaction[0],
-                value: reaction[1],
+                name: language.name,
+                value: language.reaction,
                 inline: true
             })
         }
         const languagesDescription = content.register_languages_description
-        const languagesMessage = await message.author.send(getMessageEmbed(client.config, content.register_languages, description=languagesDescription, fields=languagesFields))
-        for (reaction of languageReactions) {
-            await languagesMessage.react(reaction[1]);
+        const languagesMessage = await message.author.send(getMessageEmbed(config, content.register_languages, description=languagesDescription, fields=languagesFields))
+        for (language of config.roles.languageRoles) {
+            await languagesMessage.react(language.reaction);
         }
         await languagesMessage.react(finishReaction);
-        const languageReactionsResponse = await collectReactions(languagesMessage, client.config, message.author, ms=120000)
-            .catch((e) => {
-                message.author.send(getMessageEmbed(client.config, content.error, description=content.error_timeout, fields=[], error=true));
-                cancelRegister = true;
-            });
-
-        if (cancelRegister) return;
-
-        const languages = languageReactions.filter((el) => languageReactionsResponse.includes(el[1])).map((el) => el[0]);
+        const languageReactionsResponse = await collectReactions(languagesMessage, config, message.author, ms=120000);
+        data.languages = config.roles.languageRoles.filter((el) => languageReactionsResponse.includes(el.reaction));
 
         var levelFields = []
-        for (level of levels) {
+        for (level of config.roles.englishRoles) {
             levelFields.push({
-                name: find(level[0], client.translateData),
-                value: level[1],
+                name: find(level.name, client.translateData),
+                value: level.reaction,
                 inline: true
             })
         }
         const englishDescription = content.register_english_description
-        const englishMessage = await message.author.send(getMessageEmbed(client.config, content.register_english, description=englishDescription, fields=levelFields))
-        for (level of levels) {
-            await englishMessage.react(level[1]);
+        const englishMessage = await message.author.send(getMessageEmbed(config, content.register_english, description=englishDescription, fields=levelFields))
+        for (level of config.roles.englishRoles) {
+            await englishMessage.react(level.reaction);
         }        
-        const englishReactionsResponse = await collectReactions(englishMessage, client.config, message.author, ms=120000, multiple=false)
-            .catch((e) => {
-                message.author.send(getMessageEmbed(client.config, content.error, description=content.error_timeout, fields=[], error=true));
-                cancelRegister = true;
-            });
+        const englishReactionsResponse = await collectReactions(englishMessage, config, message.author, ms=120000, multiple=false);
+        data.english = config.roles.englishRoles.filter((el) => englishReactionsResponse.includes(el.reaction))[0]
 
-        if (cancelRegister) return;
+        const profileEmbed = getMessageEmbed(
+            config, 
+            `${content.profile} » ${data.nick}`, "", 
+            [
+                {name: content.field_bio, value: data.bio},
+                {name: content.field_name, value: data.name, inline: true},
+                {name: content.field_nick, value: data.nick, inline: true},
+                {name: content.field_portfolio, value: data.portfolio, inline: true},
+                {name: content.field_github, value: data.github, inline: true},
 
-        const lvl = find(levels.filter((el) => englishReactionsResponse.includes(el[1])).map((el) => el[0])[0], client.translateData)
+                {name: content.field_name, value: data.name, inline: true},
+                {name: content.field_name, value: data.name, inline: true},
+            ], 
+            false, 
+            true
+        );
 
-        var desc = `Seus dados são: \nNome: ${nameResponse}\nPortfólio: ${portfolioResponse}\nGithub: ${githubResponse}\nLinguagens: ${languages.join(",")}\nInglês: ${lvl}}`
-        await message.author.send(getMessageEmbed(client.config, "Resultado", description=desc))
-
-
+        await message.author.send(profileEmbed);
 	}
 };
