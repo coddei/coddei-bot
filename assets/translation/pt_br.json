@@ -65,6 +65,8 @@
             "name": "registrar",
             "description": "Faz o registro do usuário no servidor",
             "response_content_1": "Registro",
+            "response_content_2": "Registrando...",
+            "response_content_3": "Você foi registrado com sucesso 😎🎉",
             "error_content_1": "Você já está registrado 😅",
 
             "error_timeout": "Você não escreveu nada então o tempo acabou. Se ainda quiser se registrar use o comando novamente 😄",
@@ -83,6 +85,8 @@
             "field_nick": "Nickname",
             "field_portfolio": "Portfólio",
             "field_github": "Github",
+            "field_languages": "Linguagens",
+            "field_english": "Habilidade em Inglês",
 
             "reaction_accept": "Linguagem adicionada 😎",
             

@@ -79,7 +79,16 @@ const getCollectedMessage = async (message, config, text, timeoutText, errorText
     return response;
 }
 
-const getMessageEmbed = (config, title, description="", fields=[], error=false, footer=false) => {
+const getMessageEmbed = (
+    config, 
+    title, 
+    description="", 
+    fields=[], 
+    error=false, 
+    footer=false, 
+    timestamp=false,
+    thumbnail=""
+) => {
 
     var color = config.accentColor;
     if (error) color = config.errorColor;
@@ -98,10 +107,15 @@ const getMessageEmbed = (config, title, description="", fields=[], error=false, 
     }
 
     if (footer) {
-        embed.footer = {
-            text: config.year + " © Coddei",
-            icon_url: config.logoURL
-        }
+        embed.footer = { text: config.year + " © Coddei", icon_url: config.logoURL }
+    }
+
+    if (timestamp) {
+        embed.timestamp = new Date();
+    }
+
+    if (thumbnail.length) {
+        embed.thumbnail = { url: thumbnail }
     }
 
     return {embed: embed}
@@ -116,7 +130,9 @@ module.exports = {
         const content = client.translateData.commands.register;
         const config = client.config;
 
-        if (client.guild.roles.cache.find(role => role.id == config.memberRoleID)) {
+        const member = client.guild.members.cache.find(member => member.id === message.author.id);
+
+        if (member.roles.cache.find(role => role.id === config.roles.memberRoleID)) {
             return message.reply(getMessageEmbed(config, content.error_content_1, "", [], false, true));
         }
 
@@ -156,8 +172,8 @@ module.exports = {
             await languagesMessage.react(language.reaction);
         }
         await languagesMessage.react(finishReaction);
-        const languageReactionsResponse = await collectReactions(languagesMessage, config, message.author, ms=120000);
-        data.languages = config.roles.languageRoles.filter((el) => languageReactionsResponse.includes(el.reaction));
+        const languageReactionsResponse = await collectReactions(languagesMessage, client, message.author, ms=120000);
+        data.languages = config.roles.languageRoles.filter(el => languageReactionsResponse.includes(el.reaction));
 
         var levelFields = []
         for (level of config.roles.englishRoles) {
@@ -172,8 +188,25 @@ module.exports = {
         for (level of config.roles.englishRoles) {
             await englishMessage.react(level.reaction);
         }        
-        const englishReactionsResponse = await collectReactions(englishMessage, config, message.author, ms=120000, multiple=false);
-        data.english = config.roles.englishRoles.filter((el) => englishReactionsResponse.includes(el.reaction))[0]
+        const englishReactionsResponse = await collectReactions(englishMessage, client, message.author, ms=120000, multiple=false);
+        data.english = config.roles.englishRoles.filter(el => englishReactionsResponse.includes(el.reaction))[0]
+
+        const registeringMessage = await message.author.send(getMessageEmbed(config, content.response_content_2));
+
+        // Add roles
+        for (role of data.languages) {
+            await member.roles.add(role.id)
+        }
+        await member.roles.add(data.english.id);
+        await member.roles.add(config.roles.memberRoleID);
+
+        const languagesRoles = member.roles.cache
+            .filter(role => data.languages.map(el => el.id).includes(role.id))
+            .map(role => `<@&${role.id}>`).join(', ');
+        
+        const englishRole = member.roles.cache
+            .filter(role => role.id === data.english.id)
+            .map(role => `<@&${role.id}>`).join(', ');
 
         const profileEmbed = getMessageEmbed(
             config, 
@@ -185,13 +218,23 @@ module.exports = {
                 {name: content.field_portfolio, value: data.portfolio, inline: true},
                 {name: content.field_github, value: data.github, inline: true},
 
-                {name: content.field_name, value: data.name, inline: true},
-                {name: content.field_name, value: data.name, inline: true},
+                {name: content.field_languages, value: languagesRoles, inline: true},
+                {name: content.field_english, value: englishRole, inline: true}
             ], 
             false, 
-            true
+            true,
+            true,
+            member.user.displayAvatarURL()
         );
 
-        await message.author.send(profileEmbed);
+        await registeringMessage.delete();
+        await message.author.send(getMessageEmbed(config, content.response_content_3));
+
+        try {
+            const channel = client.guild.channels.cache.find(channel => channel.id == client.config.channels.newcomersChannelID);
+            channel.send(profileEmbed);
+        } catch (error) {
+            console.log(error);
+        }
 	}
 };
