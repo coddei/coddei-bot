@@ -1,6 +1,4 @@
-
-const { MessageEmbed } = require("discord.js");
-const { find } = require("../utils");
+const { find, getProfileEmbed } = require("../utils");
 
 class CommandUseError extends Error {
     constructor(message) {
@@ -131,8 +129,6 @@ module.exports = {
         const config = client.config;
 
         const member = client.guild.members.cache.find(member => member.id === message.author.id);
-        console.log(member.user.displayAvatarURL());
-        console.log(member.user.avatarURL());
 
         if (member.roles.cache.find(role => role.id === config.roles.memberRoleID)) {
             return message.reply(getMessageEmbed(config, content.error_content_1, "", [], false, true));
@@ -195,22 +191,14 @@ module.exports = {
 
         const registeringMessage = await message.author.send(getMessageEmbed(config, content.response_content_2));
 
-        // Add roles
-        for (role of data.languages) {
-            await member.roles.add(role.id)
-        }
-        await member.roles.add(data.english.id);
-        await member.roles.add(config.roles.memberRoleID);
-
-        const languagesRoles = member.roles.cache
+        const languagesRoles = config.roles.languageRoles
             .filter(role => data.languages.map(el => el.id).includes(role.id))
             .map(role => `<@&${role.id}>`).join(', ');
-        
-        const englishRole = member.roles.cache
+        const englishRole = config.roles.englishRoles
             .filter(role => role.id === data.english.id)
             .map(role => `<@&${role.id}>`).join(', ');
 
-        const profileEmbed = getMessageEmbed(
+        var profileEmbed = getMessageEmbed(
             config, 
             `${content.profile} » ${data.nick}`, "", 
             [
@@ -229,8 +217,7 @@ module.exports = {
             member.user.displayAvatarURL()
         );
 
-        await registeringMessage.delete();
-        await message.author.send(getMessageEmbed(config, content.response_content_3));
+        var registered = false;
 
         // If has api, send request to add member
         if (config.apiURL.length) {
@@ -238,19 +225,46 @@ module.exports = {
                 var url = `${config.apiURL}/discord/members`;
 
                 data.user = member.user;
-                client.axios.post(url, data).then(() => {
-                    const channel = client.guild.channels.cache.find(channel => channel.id == client.config.channels.newcomersChannelID);
-                    channel.send(profileEmbed);
+                await client.axios.post(url, data).then((response) => {
+                    const data = response.data;
+                    profileEmbed = getProfileEmbed(client, data.user);
+                    registered = true;
                 }).catch((e) => {
                     console.log(e);
                 });
-            } catch (error) {
-                console.log(error);
+            } catch (e) {
+                console.log(e);
             }
         } else {
-            const channel = client.guild.channels.cache.find(channel => channel.id == client.config.channels.newcomersChannelID);
-            channel.send(profileEmbed);
+            registered = true;
         }
-        
+
+        // If something went wrong
+        if (!registered) {
+            return message.reply(getMessageEmbed(config, content.error_content_2, "", [], false, true));
+        }
+
+        // Update user nick
+        try {
+            await member.setNickname(data.nick);
+        } catch (e) {
+            console.log(e);
+        }
+
+        // Add roles
+        for (role of data.languages) {
+            await member.roles.add(role.id);
+        }
+        await member.roles.add(data.english.id);
+        await member.roles.add(config.roles.memberRoleID);
+
+        // Send register confirmation
+        await registeringMessage.delete();
+        await message.author.send(getMessageEmbed(config, content.response_content_3));
+
+        // Send profile embed to new members channel
+        const channel = client.guild.channels.cache.find(channel => channel.id == client.config.channels.newcomersChannelID);
+        channel.send(profileEmbed);
+
 	}
 };
