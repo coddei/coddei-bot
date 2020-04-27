@@ -131,6 +131,8 @@ module.exports = {
         const config = client.config;
 
         const member = client.guild.members.cache.find(member => member.id === message.author.id);
+        console.log(member.user.displayAvatarURL());
+        console.log(member.user.avatarURL());
 
         if (member.roles.cache.find(role => role.id === config.roles.memberRoleID)) {
             return message.reply(getMessageEmbed(config, content.error_content_1, "", [], false, true));
@@ -141,7 +143,7 @@ module.exports = {
 
         const timeoutErrorText = content.error_timeout;
         const commandErrorText = content.error_command_use;
-        const data = {}
+        var data = {}
 
         data.name = await getCollectedMessage(message, config, content.register_name, timeoutErrorText, commandErrorText, 120000);
         if (data.name instanceof Error) return;
@@ -230,11 +232,25 @@ module.exports = {
         await registeringMessage.delete();
         await message.author.send(getMessageEmbed(config, content.response_content_3));
 
-        try {
+        // If has api, send request to add member
+        if (config.apiURL.length) {
+            try {
+                var url = `${config.apiURL}/discord/members`;
+
+                data.user = member.user;
+                client.axios.post(url, data).then(() => {
+                    const channel = client.guild.channels.cache.find(channel => channel.id == client.config.channels.newcomersChannelID);
+                    channel.send(profileEmbed);
+                }).catch((e) => {
+                    console.log(e);
+                });
+            } catch (error) {
+                console.log(error);
+            }
+        } else {
             const channel = client.guild.channels.cache.find(channel => channel.id == client.config.channels.newcomersChannelID);
             channel.send(profileEmbed);
-        } catch (error) {
-            console.log(error);
         }
+        
 	}
 };
