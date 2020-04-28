@@ -7,7 +7,7 @@ module.exports = {
     usage: "commands.recommend.usage",
     guildOnly: true,
     cooldown: 1,
-	execute(client, message, args) {
+	execute: async (client, message, args) => {
 
         const content = client.translateData.commands.recommend;
 
@@ -43,17 +43,6 @@ module.exports = {
             name = message.member.displayName;
         }
 
-        const recommendEmbed = new MessageEmbed()
-            .setColor(client.config.accentColor)
-            .setTitle(`${content.response_content_3} » ${name}`)
-            .addFields(
-                {name: content.response_content_4, value: title},
-                {name: content.response_content_5, value: link},
-                {name: content.response_content_6, value: description}
-            )
-            .setFooter(client.config.year + " © Coddei", client.config.logoURL)
-            .setTimestamp();
-
         var data = {
             author: {username: name, id: message.author.id},
             title: title,
@@ -70,7 +59,7 @@ module.exports = {
 
                 await client.axios.post(url, data).then((response) => {
                     if (response.data.success) {
-                        recommendEmbed = getRecommendationEmbed(client, response.data);
+                        recommendEmbed = getRecommendationEmbed(client, response.data.recommendation);
                         recommended = true;
                     }
                 }).catch((e) => {
