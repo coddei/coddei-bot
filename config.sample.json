@@ -4,6 +4,7 @@
     "guildID": "",
     "accentColor": "#0072FF",
     "errorColor": "#B22222",
+    "apiURL": "",
     "roles": {
         "defaultRoleID": "",
         "memberRoleID": "",

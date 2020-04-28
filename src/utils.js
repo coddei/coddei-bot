@@ -1,3 +1,4 @@
+const { MessageEmbed } = require("discord.js");
 const { language } = require("../config.json")
 
 module.exports = {
@@ -11,5 +12,38 @@ module.exports = {
     },
     find(keypath, target) {
         return keypath.split('.').reduce((previous, current) => previous[current], target);
+    },
+    getProfileEmbed(client, userData) {
+        const content = client.translateData.commands.register;
+        const config = client.config;
+
+        const knownLanguageRoles = config.roles.languageRoles.map(el => el.id);
+        const languageRoles = userData.discord.roles
+            .filter(el => knownLanguageRoles.includes(el.role_id))
+            .map(el => `<@&${el.role_id}>`).join(', ');
+
+        const knownEnglishRoles = config.roles.englishRoles.map(el => el.id);
+        const englishRole = userData.discord.roles
+            .filter(el => knownEnglishRoles.includes(el.role_id))
+            .map(el => `<@&${el.role_id}>`)[0];
+
+        const githubURL = userData.github_url || content.none;
+        const portfolioURL = userData.portfolio_url || content.none;
+
+        return new MessageEmbed()
+            .setColor(config.accentColor)
+            .setTitle(`${content.profile} » ${userData.username}`)
+            .addFields(
+                { name: content.field_bio, value: userData.description },
+                { name: content.field_name, value: userData.name, inline: true },
+                { name: content.field_nick, value: userData.username, inline: true },
+                { name: content.field_portfolio, value: portfolioURL, inline: true },
+                { name: content.field_github, value: githubURL, inline: true },
+                { name: content.field_languages, value: languageRoles, inline: true },
+                { name: content.field_english, value: englishRole, inline: true }
+            )
+            .setThumbnail(userData.discord.displayAvatarURL)
+            .setTimestamp()
+            .setFooter(config.year + " © Coddei", config.logoURL);
     }
 }
