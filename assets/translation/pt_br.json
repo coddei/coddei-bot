@@ -46,7 +46,7 @@
             "error_content_1": "Você não passou um usuário válido",
             "error_content_2": "Apenas 1 por vez, por favor :)"
         },
-        "indicate": {
+        "recommend": {
             "name": "indicar",
             "description": "Indica um link, curso ou livro",
             "usage": "<título> <link> <descrição>",
