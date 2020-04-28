@@ -24,6 +24,8 @@ Configurar os valores no arquivo.
     "token": "auth token do bot no Discord",
     "guildID": "ID do servidor no Discord",
     "accentColor": "cor usada em embeds",
+    "errorColor": "cor usada em embeds de erro",
+    "apiURL": "url para api, se houver uma",
     "roles": {
         "defaultRoleID": "ID da role padrão para novos usuários",
         "memberRoleID": "ID da role para usuário cadastrados"

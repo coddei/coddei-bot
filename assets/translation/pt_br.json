@@ -60,10 +60,46 @@
             "error_content_2": "o link que você passou não é válido"
         },
         "register": {
+            "error": "Erro",
+            "none": "Não tem",
+            "profile": "Perfil",
             "name": "registrar",
             "description": "Faz o registro do usuário no servidor",
             "response_content_1": "Registro",
-            "error_content_1": "Você já está registrado 😅"
+            "response_content_2": "Registrando...",
+            "response_content_3": "Você foi registrado com sucesso 😎🎉",
+            "error_content_1": "Você já está registrado 😅",
+            "error_content_2": "Algo deu errado 😦, tente contatar alguém da nossa staff",
+
+            "error_timeout": "Você não escreveu nada então o tempo acabou. Se ainda quiser se registrar use o comando novamente 😄",
+            "error_command_use": "Hm, parece que você está tentando usar um comando? O registro foi cancelado, você pode tentar de novo mas dessa vez vamos deixar os comandos para depois do registro ok? 🙂",
+
+            "register_name": "Seu Nome",
+            "register_nick": "Seu Nick",
+            "register_bio": "Bio",
+            "register_bio_description": "Fale um pouco sobre sua experiência e suas expectativas",
+            "register_portfolio": "Portfólio",
+            "register_github": "Github",
+            "register_languages": "Linguagens",
+
+            "field_bio": "Bio",
+            "field_name": "Nome",
+            "field_nick": "Nickname",
+            "field_portfolio": "Portfólio",
+            "field_github": "Github",
+            "field_languages": "Linguagens",
+            "field_english": "Habilidade em Inglês",
+
+            "reaction_accept": "Linguagem adicionada 😎",
+            
+            "register_languages_description": "Selecione as reações das respectivas linguagens que você já sabe ou tem interesse em aprender 😄. Depois de selecionar as linguagens, clique no ☑️ para continuar. Esperar as reações carregarem por favor.",
+            
+            "register_english": "Nivel de Inglês",
+            "register_english_description": "Selecione o seu nível de Inglês de acordo com as opções abaixo.",
+            "register_english_beginner": "Iniciante",
+            "register_english_intermediate": "Intermediário",
+            "register_english_advanced": "Avançado",
+            "register_english_fluent": "Fluente"
         }
     }
 }

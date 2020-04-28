@@ -3,9 +3,105 @@
     "token": "",
     "guildID": "",
     "accentColor": "#0072FF",
+    "errorColor": "#B22222",
+    "apiURL": "",
     "roles": {
         "defaultRoleID": "",
-        "memberRoleID": ""
+        "memberRoleID": "",
+        "englishRoles": [
+            {
+                "name": "commands.register.register_english_beginner",
+                "reaction": "1⃣",
+                "id": ""
+            },
+            {
+                "name": "commands.register.register_english_intermediate",
+                "reaction": "2⃣",
+                "id": ""
+            },
+            {
+                "name": "commands.register.register_english_advanced",
+                "reaction": "3⃣",
+                "id": ""
+            },
+            {
+                "name": "commands.register.register_english_fluent",
+                "reaction": "4⃣",
+                "id": ""
+            }                                                
+        ],
+        "languageRoles": [
+            {
+                "name": "Python",
+                "reaction": "1⃣",
+                "id": ""
+            },
+            {
+                "name": "Javascript",
+                "reaction": "2⃣",
+                "id": ""
+            },
+            {
+                "name": "Typescript",
+                "reaction": "3⃣",
+                "id": ""
+            },
+            {
+                "name": "Java",
+                "reaction": "4⃣",
+                "id": ""
+            },
+            {
+                "name": "Kotlin",
+                "reaction": "5⃣",
+                "id": ""
+            },
+            {
+                "name": "Swift",
+                "reaction": "6⃣",
+                "id": ""
+            },
+            {
+                "name": "PHP",
+                "reaction": "7⃣",
+                "id": ""
+            },
+            {
+                "name": "Ruby",
+                "reaction": "8⃣",
+                "id": ""
+            },
+            {
+                "name": "C#",
+                "reaction": "9⃣",
+                "id": ""
+            },
+            {
+                "name": "C & C++",
+                "reaction": "🔟",
+                "id": ""
+            },
+            {
+                "name": "Lua",
+                "reaction": "🇦",
+                "id": ""
+            },
+            {
+                "name": "SQL",
+                "reaction": "🇧",
+                "id": ""
+            },
+            {
+                "name": "NoSQL",
+                "reaction": "🇨",
+                "id": ""
+            },
+            {
+                "name": "UI & UX",
+                "reaction": "🇩",
+                "id": ""
+            }
+        ]
     },
     "channels": {
         "materialsChannelID": "",

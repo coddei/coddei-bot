@@ -101,7 +101,7 @@ client.on("message", message => {
 });
 
 client.on("guildMemberAdd", member => {
-    role = member.guild.roles.cache.find(role => role.id == config.roles.defaultRole);
+    role = member.guild.roles.cache.find(role => role.id == config.roles.defaultRoleID);
     member.roles.add(role);
 });
 
