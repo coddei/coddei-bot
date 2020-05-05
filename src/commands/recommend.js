@@ -1,14 +1,13 @@
 const { MessageEmbed } = require("discord.js");
 
 module.exports = {
-    name: "commands.indicate.name",
-    description: "commands.indicate.description",
-    aliases: ["indicate"],
-    usage: "commands.indicate.usage",
+    name: "commands.recommend.name",
+    description: "commands.recommend.description",
+    usage: "commands.recommend.usage",
     cooldown: 1,
 	execute(client, message, args) {
 
-        const content = client.translateData.commands.indicate;
+        const content = client.translateData.commands.recommend;
 
         const infoEmbed = new MessageEmbed()
             .setColor(client.config.accentColor)
