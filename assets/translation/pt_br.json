@@ -8,7 +8,8 @@
         "response_missing_args": "O uso correto do comando é:",
         "response_cooldown_1": "por favor espere",
         "response_cooldown_2": "segundo(s) antes de usar o comando",
-        "response_cooldown_3": "de novo."
+        "response_cooldown_3": "de novo.",
+        "error_something_went_wrong": "Algo deu errado 😦, tente contatar alguém da nossa staff"
     },
     "commands": {
         "help": {
@@ -69,7 +70,6 @@
             "response_content_2": "Registrando...",
             "response_content_3": "Você foi registrado com sucesso 😎🎉",
             "error_content_1": "Você já está registrado 😅",
-            "error_content_2": "Algo deu errado 😦, tente contatar alguém da nossa staff",
 
             "error_timeout": "Você não escreveu nada então o tempo acabou. Se ainda quiser se registrar use o comando novamente 😄",
             "error_command_use": "Hm, parece que você está tentando usar um comando? O registro foi cancelado, você pode tentar de novo mas dessa vez vamos deixar os comandos para depois do registro ok? 🙂",
