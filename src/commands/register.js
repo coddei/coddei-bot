@@ -226,9 +226,10 @@ module.exports = {
 
                 data.user = member.user;
                 await client.axios.post(url, data).then((response) => {
-                    const data = response.data;
-                    profileEmbed = getProfileEmbed(client, data.user);
-                    registered = true;
+                    if (response.data.success) {
+                        profileEmbed = getProfileEmbed(client, response.data.user);
+                        registered = true;
+                    }
                 }).catch((e) => {
                     console.log(e);
                 });
@@ -241,7 +242,7 @@ module.exports = {
 
         // If something went wrong
         if (!registered) {
-            return message.reply(getMessageEmbed(config, content.error_content_2, "", [], false, true));
+            return message.reply(getMessageEmbed(config, client.translateData.index.error_something_went_wrong, "", [], false, true));
         }
 
         // Update user nick

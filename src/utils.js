@@ -45,5 +45,20 @@ module.exports = {
             .setThumbnail(userData.discord.displayAvatarURL)
             .setTimestamp()
             .setFooter(config.year + " © Coddei", config.logoURL);
+    },
+    getRecommendationEmbed(client, recommendationData) {
+        const content = client.translateData.commands.recommend;
+        const config = client.config;
+
+        return new MessageEmbed()
+            .setColor(client.config.accentColor)
+            .setTitle(`${content.response_content_3} » ${recommendationData.author.username}`)
+            .addFields(
+                {name: content.response_content_4, value: recommendationData.title},
+                {name: content.response_content_5, value: recommendationData.url},
+                {name: content.response_content_6, value: recommendationData.description}
+            )
+            .setTimestamp()
+            .setFooter(config.year + " © Coddei", config.logoURL);
     }
 }

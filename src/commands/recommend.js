@@ -1,11 +1,13 @@
 const { MessageEmbed } = require("discord.js");
+const { getRecommendationEmbed } = require("../utils");
 
 module.exports = {
     name: "commands.recommend.name",
     description: "commands.recommend.description",
     usage: "commands.recommend.usage",
+    guildOnly: true,
     cooldown: 1,
-	execute(client, message, args) {
+	execute: async (client, message, args) => {
 
         const content = client.translateData.commands.recommend;
 
@@ -41,23 +43,40 @@ module.exports = {
             name = message.member.displayName;
         }
 
-        const postEmbed = new MessageEmbed()
-            .setColor(client.config.accentColor)
-            .setTitle(`${content.response_content_3} » ${name}`)
-            .addFields(
-                {name: content.response_content_4, value: title},
-                {name: content.response_content_5, value: link},
-                {name: content.response_content_6, value: description}
-            )
-            .setFooter(client.config.year + " © Coddei", client.config.logoURL)
-            .setTimestamp();
+        var data = {
+            author: {username: name, id: message.author.id},
+            title: title,
+            url: link,
+            description: description
+        }
+        var recommendEmbed = getRecommendationEmbed(client, data);
+        var recommended = false;
+        
+        // If has api, send request to add recommendation
+        if (client.config.apiURL.length) {
+            try {
+                var url = `${client.config.apiURL}/recommendations`;
 
-        try {
-            const channel = client.guild.channels.cache.find(channel => channel.id == client.config.channels.materialsChannelID);
-            channel.send(postEmbed);
-        } catch (error) {
-            console.log(error);
+                await client.axios.post(url, data).then((response) => {
+                    if (response.data.success) {
+                        recommendEmbed = getRecommendationEmbed(client, response.data.recommendation);
+                        recommended = true;
+                    }
+                }).catch((e) => {
+                    console.log(e);
+                });
+            } catch (e) {
+                console.log(e);
+            }
+        } else {
+            recommended = true;
         }
 
+        if (!recommended) {
+            return message.reply(client.translateData.index.error_something_went_wrong);
+        }
+        
+        const channel = client.guild.channels.cache.find(channel => channel.id == client.config.channels.materialsChannelID);
+        channel.send(recommendEmbed);
 	}
 };
