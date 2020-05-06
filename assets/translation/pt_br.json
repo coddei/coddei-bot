@@ -45,7 +45,7 @@
             "description": "Posta sua foto de perfil ou de um usuário específico",
             "usage": "@usuário",
             "error_content_1": "Você não passou um usuário válido",
-            "error_content_2": "Apenas 1 por vez, por favor :)"
+            "error_content_2": "Apenas 1 por vez, por favor 🙂"
         },
         "recommend": {
             "name": "indicar",
@@ -100,6 +100,15 @@
             "register_english_intermediate": "Intermediário",
             "register_english_advanced": "Avançado",
             "register_english_fluent": "Fluente"
+        },
+        "profile": {
+            "name": "perfil",
+            "description": "Mostra o perfil de servidor do usuário",
+            "usage": "@usuário",
+            "error_content_1": "Esse servidor não utiliza a Coddei-api 😅",
+            "error_content_2": "Você não passou um usuário válido",
+            "error_content_3": "Apenas 1 por vez, por favor 🙂",
+            "error_content_4": "Não foi possível acessar esse perfil"
         }
     }
 }
