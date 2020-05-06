@@ -135,7 +135,11 @@ module.exports = {
         }
 
         // Register message
-        await message.author.send(getMessageEmbed(config, content.response_content_1, "", [], false, true));
+        try {
+            await message.author.send(getMessageEmbed(config, content.response_content_1, "", [], false, true));
+        } catch (e) {
+            return message.reply(content.error_content_2);
+        }
 
         const timeoutErrorText = content.error_timeout;
         const commandErrorText = content.error_command_use;

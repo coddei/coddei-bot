@@ -70,6 +70,7 @@
             "response_content_2": "Registrando...",
             "response_content_3": "Você foi registrado com sucesso 😎🎉",
             "error_content_1": "Você já está registrado 😅",
+            "error_content_2": "parece que eu não posso enviar uma DM para você! Sua DM está ativa?",
 
             "error_timeout": "Você não escreveu nada então o tempo acabou. Se ainda quiser se registrar use o comando novamente 😄",
             "error_command_use": "Hm, parece que você está tentando usar um comando? O registro foi cancelado, você pode tentar de novo mas dessa vez vamos deixar os comandos para depois do registro ok? 🙂",
