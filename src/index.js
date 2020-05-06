@@ -3,6 +3,8 @@ const fs = require("fs");
 const Discord = require("discord.js");
 const axios = require('axios')
 
+const { MessageEmbed } = require("discord.js");
+
 const { getYear, find, getTranslateData } = require("./utils");
 
 const config = require("../config.json");
@@ -100,9 +102,24 @@ client.on("message", message => {
     }
 });
 
+// Actions for new member
 client.on("guildMemberAdd", member => {
+    // Add default role
     role = member.guild.roles.cache.find(role => role.id == config.roles.defaultRoleID);
     member.roles.add(role);
+
+    // Ping member on dm
+    try {
+        member.send(
+            new MessageEmbed()
+                .setColor(config.accentColor)
+                .setTitle(translateData.index.welcome_title)
+                .setDescription(translateData.index.welcome_description.replace("<prefix>", config.prefix))
+                .setFooter(config.year + " © Coddei", config.logoURL)
+        );
+    } catch(e) {
+        console.log(e);
+    }
 });
 
 client.login(token);

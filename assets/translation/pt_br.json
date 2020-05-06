@@ -9,7 +9,10 @@
         "response_cooldown_1": "por favor espere",
         "response_cooldown_2": "segundo(s) antes de usar o comando",
         "response_cooldown_3": "de novo.",
-        "error_something_went_wrong": "Algo deu errado 😦, tente contatar alguém da nossa staff"
+        "error_something_went_wrong": "Algo deu errado 😦, tente contatar alguém da nossa staff",
+
+        "welcome_title": "Seja bem vindo ao servidor da Coddei",
+        "welcome_description": " - Temos como objetivo promover a interação de desenvolvedores e interessados na área de programação;\n - Não tenha vergonha de interagir se você ainda estiver começando na área, até os melhores tem dificuldades;\n - E para você que já tem experiência e quer aprender mais, tente ajudar os outros, ajudar é um bom modo de aprender também;\n\nNa Coddei nós temos um sistema de registro, para que você tenha acesso as canais de conversa e ajuda você precisa usar o comando `<prefix>registrar` aqui mesmo e nosso processo de registro vai começar.\n\nNão esqueça de ler as 📜regras no canal de regras e seja bem vindo novo **Codder**."
     },
     "commands": {
         "help": {
@@ -69,6 +72,8 @@
             "response_content_1": "Registro",
             "response_content_2": "Registrando...",
             "response_content_3": "Você foi registrado com sucesso 😎🎉",
+            "response_content_4": "Esse é o nosso sisteam de registro, com ele você pode informar alguns detalhes sobre você como seu nick no servidor, nome, interesses, entre outras coisas.\nSe você não responder após um tempo, o registro será cancelado automaticamente.",
+
             "error_content_1": "Você já está registrado 😅",
             "error_content_2": "parece que eu não posso enviar uma DM para você! Sua DM está ativa?",
 

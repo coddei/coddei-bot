@@ -17,7 +17,6 @@ module.exports = {
         var profileEmbed = null;
 
         if (!args.length) {
-            console.log(message.author.id);
             const url = `${client.config.apiURL}/discord/members/${message.author.id}`;
             await client.axios.get(url).then((response) => {
                 if (response.data.success) {
@@ -43,7 +42,6 @@ module.exports = {
         }
 
         const taggedUser = message.mentions.users.first();
-        console.log(taggedUser.id);
 
         const url = `${client.config.apiURL}/discord/members/${taggedUser.id}`;
         await client.axios.get(url).then((response) => {

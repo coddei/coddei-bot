@@ -136,7 +136,7 @@ module.exports = {
 
         // Register message
         try {
-            await message.author.send(getMessageEmbed(config, content.response_content_1, "", [], false, true));
+            await message.author.send(getMessageEmbed(config, content.response_content_1, content.response_content_4, [], false, true));
         } catch (e) {
             return message.reply(content.error_content_2);
         }
