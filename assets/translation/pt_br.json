@@ -61,7 +61,8 @@
             "response_content_5": "**Link:**",
             "response_content_6": "**Descrição:**",
             "error_content_1": "você não passou os argumentos corretos",
-            "error_content_2": "o link que você passou não é válido"
+            "error_content_2": "o link que você passou não é válido",
+            "error_content_3": "encontrei mais de 1 link na sua mensagem, desse jeito não posso reconhecer qual o link que você quer recomendar, tente passar só um da próxima vez 😉"
         },
         "register": {
             "error": "Erro",
