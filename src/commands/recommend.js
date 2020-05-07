@@ -28,14 +28,25 @@ module.exports = {
             return message.reply(content.error_content_1, infoEmbed);
         }
 
-        const title = args[0];
-        const link = args[1];
-        const description = args.slice(2).join(" ");
-
+        const mContent = message.content.slice(config.prefix.length);
         const linkRegex = /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g;
 
-        if (!link.match(linkRegex)) {
+        const links = mContent.match(linkRegex);
+
+        if (!links) {
             return message.reply(content.error_content_2, infoEmbed);
+        }
+
+        if (links.length > 1) {
+            return message.reply(content.error_content_3, infoEmbed);
+        }
+
+        const link = links[0];
+        const title = mContent.slice(0, mContent.indexOf(link)).trim();
+        const description = mContent.slice(mContent.indexOf(link) + link.length).trim();
+
+        if (!title.length || !description.length) {
+            return message.reply(content.error_content_1, infoEmbed);
         }
 
         var name = message.member.nickname;
