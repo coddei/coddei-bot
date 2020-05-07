@@ -28,7 +28,7 @@ module.exports = {
             return message.reply(content.error_content_1, infoEmbed);
         }
 
-        const mContent = message.content.slice(config.prefix.length);
+        const mContent = message.content.slice(client.config.prefix.length);
         const linkRegex = /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g;
 
         const links = mContent.match(linkRegex);
