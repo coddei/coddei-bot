@@ -20,7 +20,7 @@ module.exports = {
             const url = `${client.config.apiURL}/discord/members/${message.author.id}`;
             await client.axios.get(url).then((response) => {
                 if (response.data.success) {
-                    profileEmbed = getProfileEmbed(client, JSON.parse(response.data.user));
+                    profileEmbed = getProfileEmbed(client, response.data.user);
                 }
             }).catch((e) => {
                 console.log(e);
@@ -46,7 +46,7 @@ module.exports = {
         const url = `${client.config.apiURL}/discord/members/${taggedUser.id}`;
         await client.axios.get(url).then((response) => {
             if (response.data.success) {
-                profileEmbed = getProfileEmbed(client, JSON.parse(response.data.user));
+                profileEmbed = getProfileEmbed(client, response.data.user);
             }
         }).catch((e) => {
             console.log(e);
