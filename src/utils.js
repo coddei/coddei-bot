@@ -18,7 +18,7 @@ module.exports = {
         const config = client.config;
 
         const knownLanguageRoles = config.roles.languageRoles.map(el => el.id);
-        const languageRoles = userData.discord.roles
+        var languageRoles = userData.discord.roles
             .filter(el => knownLanguageRoles.includes(el.role_id))
             .map(el => `<@&${el.role_id}>`).join(', ');
 
@@ -29,6 +29,11 @@ module.exports = {
 
         const githubURL = userData.github_url || content.none;
         const portfolioURL = userData.portfolio_url || content.none;
+
+        // Check if user has any languages selected
+        if (!languageRoles.length) {
+            languageRoles = content.nothing;
+        }
 
         return new MessageEmbed()
             .setColor(config.accentColor)
