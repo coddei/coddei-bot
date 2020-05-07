@@ -32,11 +32,11 @@ module.exports = {
 
         return new MessageEmbed()
             .setColor(config.accentColor)
-            .setTitle(`${content.profile} » ${userData.username}`)
+            .setTitle(`${content.profile} » ${userData.nickname}`)
             .addFields(
                 { name: content.field_bio, value: userData.description },
                 { name: content.field_name, value: userData.name, inline: true },
-                { name: content.field_nick, value: userData.username, inline: true },
+                { name: content.field_nick, value: userData.nickname, inline: true },
                 { name: content.field_portfolio, value: portfolioURL, inline: true },
                 { name: content.field_github, value: githubURL, inline: true },
                 { name: content.field_languages, value: languageRoles, inline: true },
