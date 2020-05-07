@@ -168,11 +168,20 @@ module.exports = {
                 inline: true
             })
         }
+
+        var reactError = false;
+
         const languagesDescription = content.register_languages_description
         const languagesMessage = await message.author.send(getMessageEmbed(config, content.register_languages, description=languagesDescription, fields=languagesFields))
         for (language of config.roles.languageRoles) {
-            await languagesMessage.react(language.reaction);
+            await languagesMessage.react(language.reaction)
+                .then(() => {}).catch(() => {
+                    message.author.send(client.translateData.index.error_something_went_wrong);
+                    reactError = true;
+                });
         }
+        if (reactError) return;
+
         await languagesMessage.react(finishReaction);
         const languageReactionsResponse = await collectReactions(languagesMessage, client, message.author, ms=120000);
         data.languages = config.roles.languageRoles.filter(el => languageReactionsResponse.includes(el.reaction));
@@ -188,19 +197,29 @@ module.exports = {
         const englishDescription = content.register_english_description
         const englishMessage = await message.author.send(getMessageEmbed(config, content.register_english, description=englishDescription, fields=levelFields))
         for (level of config.roles.englishRoles) {
-            await englishMessage.react(level.reaction);
-        }        
+            await englishMessage.react(level.reaction)
+                .then(() => {}).catch(() => {
+                    message.author.send(client.translateData.index.error_something_went_wrong);
+                    reactError = true;
+                });
+        }
+        if (reactError) return;
+
         const englishReactionsResponse = await collectReactions(englishMessage, client, message.author, ms=120000, multiple=false);
         data.english = config.roles.englishRoles.filter(el => englishReactionsResponse.includes(el.reaction))[0]
 
         const registeringMessage = await message.author.send(getMessageEmbed(config, content.response_content_2));
 
-        const languagesRoles = config.roles.languageRoles
+        var languagesRoles = config.roles.languageRoles
             .filter(role => data.languages.map(el => el.id).includes(role.id))
             .map(role => `<@&${role.id}>`).join(', ');
         const englishRole = config.roles.englishRoles
             .filter(role => role.id === data.english.id)
             .map(role => `<@&${role.id}>`).join(', ');
+
+        if (!languagesRoles.length) {
+            languagesRoles = content.nothing;
+        }
 
         var profileEmbed = getMessageEmbed(
             config, 

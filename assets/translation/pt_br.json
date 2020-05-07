@@ -67,6 +67,7 @@
         "register": {
             "error": "Erro",
             "none": "Não tem",
+            "nothing": "Nenhuma",
             "profile": "Perfil",
             "name": "registrar",
             "description": "Faz o registro do usuário no servidor",
@@ -99,7 +100,7 @@
 
             "reaction_accept": "Linguagem adicionada 😎",
             
-            "register_languages_description": "Selecione as reações das respectivas linguagens que você já sabe ou tem interesse em aprender 😄. Depois de selecionar as linguagens, clique no ☑️ para continuar. Esperar as reações carregarem por favor.",
+            "register_languages_description": "Selecione as reações das respectivas linguagens que você já sabe ou tem interesse em aprender 😄. Depois de selecionar as linguagens, clique no ☑️ para continuar. **Espere** as reações carregarem por favor.",
             
             "register_english": "Nivel de Inglês",
             "register_english_description": "Selecione o seu nível de Inglês de acordo com as opções abaixo.",
