@@ -33,7 +33,9 @@ module.exports = {
             return message.channel.send(profileEmbed);
         }
 
-        if (!message.mentions.users.size) {
+        options = ["nick", "github", "portfolio", "bio"];
+
+        if (!message.mentions.users.size && !options.includes(args[0])) {
             return message.reply(content.error_content_2)
         }
 
@@ -41,8 +43,19 @@ module.exports = {
             return message.reply(content.error_content_3)
         }
 
-        const taggedUser = message.mentions.users.first();
+        if (options.includes(args[0])) {
+            const url = `${client.config.apiURL}/discord/members/${message.author.id}`;
+            await client.axios.put(url, {args[0]: args.slice(1).join(" ")}).then((response) => {
+                if (response.data.success) {
+                    return message.reply(content.response_content_1)
+                }
+                return message.reply(content.error_content_5)
+            }).catch((e) => {
+                console.log(e);
+            });            
+        }
 
+        const taggedUser = message.mentions.users.first();
         const url = `${client.config.apiURL}/discord/members/${taggedUser.id}`;
         await client.axios.get(url).then((response) => {
             if (response.data.success) {

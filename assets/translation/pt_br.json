@@ -113,10 +113,12 @@
             "name": "perfil",
             "description": "Mostra o perfil de servidor do usuário",
             "usage": "@usuário",
+            "response_content_1": "seu perfil foi atualizado com sucesso",
             "error_content_1": "Esse servidor não utiliza a Coddei-api 😅",
             "error_content_2": "Você não passou um usuário válido",
             "error_content_3": "Apenas 1 por vez, por favor 🙂",
-            "error_content_4": "Não foi possível acessar esse perfil"
+            "error_content_4": "Não foi possível acessar esse perfil",
+            "error_content_5": "Não foi possível atualizar o perfil"
         }
     }
 }
