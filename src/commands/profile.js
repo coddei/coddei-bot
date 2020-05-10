@@ -52,7 +52,17 @@ module.exports = {
                 return message.reply(content.error_content_5)
             }).catch((e) => {
                 console.log(e);
-            });            
+            });
+
+            if (args[0] === "nick") {
+                // Update user nick
+                const member = client.guild.members.cache.find(member => member.id === message.author.id);
+                try {
+                    await member.setNickname(args.slice(1).join(" "));
+                } catch (e) {
+                    console.log(e);
+                }
+            }
         }
 
         const taggedUser = message.mentions.users.first();
