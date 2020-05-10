@@ -45,7 +45,7 @@ module.exports = {
 
         if (options.includes(args[0])) {
             const url = `${client.config.apiURL}/discord/members/${message.author.id}`;
-            await client.axios.put(url, {args[0]: args.slice(1).join(" ")}).then((response) => {
+            await client.axios.put(url, {[args[0]]: args.slice(1).join(" ")}).then((response) => {
                 if (response.data.success) {
                     return message.reply(content.response_content_1)
                 }
