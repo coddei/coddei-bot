@@ -1,5 +1,5 @@
 const { MessageEmbed } = require("discord.js");
-const { getRecommendationEmbed, find } = require("../utils");
+const { getRecommendationEmbed } = require("../utils");
 
 module.exports = {
     name: "commands.recommend.name",
