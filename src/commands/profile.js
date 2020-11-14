@@ -5,7 +5,7 @@ module.exports = {
     description: "commands.profile.description",
     usage: "commands.profile.usage",
     guildOnly: true,
-    cooldown: 15,
+    cooldown: 10,
 	execute: async (client, message, args) => {
 
         const content = client.translateData.commands.profile;
@@ -54,7 +54,7 @@ module.exports = {
 
         if (!profileEmbed) {
             return message.reply(content.error_content_4);
-        }        
+        }
 
         return message.channel.send(profileEmbed);
 

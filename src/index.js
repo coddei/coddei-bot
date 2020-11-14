@@ -70,18 +70,18 @@ client.on("message", message => {
         let reply = `${data.error_missing_args}, ${message.author}!`;
         if (command.usage) {
         	reply += `\n${data.response_missing_args} \`${config.prefix}${commandNameTranslated} ${find(command.usage, translateData)}\``;
-        }        
+        }
         return message.channel.send(reply);
     }
 
     if (!cooldowns.has(commandNameTranslated)) {
         cooldowns.set(commandNameTranslated, new Discord.Collection());
     }
-    
+
     const now = Date.now();
     const timestamps = cooldowns.get(commandNameTranslated);
     const cooldownAmount = (command.cooldown || 3) * 1000;
-    
+
     if (timestamps.has(message.author.id)) {
         const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
 
