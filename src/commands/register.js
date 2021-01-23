@@ -247,27 +247,30 @@ module.exports = {
             return message.author.send(getMessageEmbed(config, client.translateData.index.error_something_went_wrong, "", [], false, true));
         }
 
-        // Update user nick
-        try {
-            await member.setNickname(data.nick);
-        } catch (e) {
-            console.log(e);
-        }
+        if (!config.devMode) {
+            // Update user nick
+            try {
+                await member.setNickname(data.nick);
+            } catch (e) {
+                console.log(e);
+            }
 
-        // Add roles
-        for (role of data.languages) {
-            await member.roles.add(role.id);
+            // Add roles
+            for (role of data.languages) {
+                await member.roles.add(role.id);
+            }
+            await member.roles.add(data.english.id);
+            await member.roles.add(config.roles.memberRoleID);
         }
-        await member.roles.add(data.english.id);
-        await member.roles.add(config.roles.memberRoleID);
 
         // Send register confirmation
         await registeringMessage.delete();
         await message.author.send(getMessageEmbed(config, content.response_content_3));
 
-        // Send profile embed to new members channel
-        const channel = client.guild.channels.cache.find(channel => channel.id == client.config.channels.newcomersChannelID);
-        channel.send(profileEmbed);
-
+        if (!config.devMode) {
+            // Send profile embed to new members channel
+            const channel = client.guild.channels.cache.find(channel => channel.id == client.config.channels.newcomersChannelID);
+            channel.send(profileEmbed);
+        }
     }
 };
