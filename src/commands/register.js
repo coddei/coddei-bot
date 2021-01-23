@@ -122,7 +122,8 @@ module.exports = {
         const content = client.translateData.commands.register;
         const config = client.config;
 
-        const member = client.guild.members.cache.find(member => member.id === message.author.id);
+        // Don't use cache for command that can be used on DM's
+        const member = await client.guild.members.fetch(message.author.id);
 
         if (isUserMember(member, config) && !config.devMode) {
             return message.reply(getMessageEmbed(config, content.error_content_1, "", [], false, true));
