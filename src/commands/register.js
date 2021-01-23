@@ -16,6 +16,10 @@ class TimeoutError extends Error {
 
 const finishReaction = "☑️";
 
+const getUserMessageReactions = (message, authorId) => {
+    return message.reactions.cache.filter(reaction => reaction.users.cache.has(authorId));
+}
+
 const collectMessage = (message, config, ms=60000) => {
     return new Promise((resolve, reject) => {
         const collector = message.author.dmChannel.createMessageCollector(
@@ -48,13 +52,16 @@ const collectReactions = (message, client, author, ms=60000, multiple=true) => {
                 collector.stop();
                 return;
             }
-            author.send(getMessageEmbed(client.config, client.translateData.commands.register.reaction_accept))
+            // Tell user if reaction was added correctly
+            // author.send(getMessageEmbed(client.config, client.translateData.commands.register.reaction_accept));
         });
         collector.on("end", collected => {
             if (!collected.array().length) {
                 return reject();
             }
-            return resolve(collected.array().map((el) => el.emoji.name));
+
+            var currentReactions = getUserMessageReactions(message, author.id);
+            return resolve(currentReactions.map((el) => el.emoji.name));
         });
     });
 }
@@ -78,12 +85,12 @@ const getCollectedMessage = async (message, config, text, timeoutText, errorText
 }
 
 const getMessageEmbed = (
-    config, 
-    title, 
-    description="", 
-    fields=[], 
-    error=false, 
-    footer=false, 
+    config,
+    title,
+    description="",
+    fields=[],
+    error=false,
+    footer=false,
     timestamp=false,
     thumbnail=""
 ) => {
@@ -96,25 +103,11 @@ const getMessageEmbed = (
         title: title
     }
 
-    if (description.length) {
-        embed.description = description;
-    }
-
-    if (fields.length) {
-        embed.fields = fields;
-    }
-
-    if (footer) {
-        embed.footer = { text: config.year + " © Coddei", icon_url: config.logoURL }
-    }
-
-    if (timestamp) {
-        embed.timestamp = new Date();
-    }
-
-    if (thumbnail.length) {
-        embed.thumbnail = { url: thumbnail }
-    }
+    if (description.length) embed.description = description;
+    if (fields.length) embed.fields = fields;
+    if (footer) embed.footer = { text: config.year + " © Coddei", icon_url: config.logoURL };
+    if (timestamp) embed.timestamp = new Date();
+    if (thumbnail.length) embed.thumbnail = { url: thumbnail };
 
     return {embed: embed}
 }
@@ -147,13 +140,13 @@ module.exports = {
 
         data.name = await getCollectedMessage(message, config, content.register_name, timeoutErrorText, commandErrorText, 120000);
         if (data.name instanceof Error) return;
-        
+
         data.nick = await getCollectedMessage(message, config, content.register_nick, timeoutErrorText, commandErrorText);
         if (data.nick instanceof Error) return
-        
+
         data.bio = await getCollectedMessage(message, config, content.register_bio, timeoutErrorText, commandErrorText, 180000, content.register_bio_description);
         if (data.bio instanceof Error) return;
-        
+
         data.portfolio = await getCollectedMessage(message, config, content.register_portfolio, timeoutErrorText, commandErrorText);
         if (data.portfolio instanceof Error) return;
 
@@ -189,7 +182,7 @@ module.exports = {
         const englishMessage = await message.author.send(getMessageEmbed(config, content.register_english, description=englishDescription, fields=levelFields))
         for (level of config.roles.englishRoles) {
             await englishMessage.react(level.reaction);
-        }        
+        }
         const englishReactionsResponse = await collectReactions(englishMessage, client, message.author, ms=120000, multiple=false);
         data.english = config.roles.englishRoles.filter(el => englishReactionsResponse.includes(el.reaction))[0]
 
@@ -203,8 +196,8 @@ module.exports = {
             .map(role => `<@&${role.id}>`).join(', ');
 
         var profileEmbed = getMessageEmbed(
-            config, 
-            `${content.profile} » ${data.nick}`, "", 
+            config,
+            `${content.profile} » ${data.nick}`, "",
             [
                 {name: content.field_bio, value: data.bio},
                 {name: content.field_name, value: data.name, inline: true},
@@ -214,8 +207,8 @@ module.exports = {
 
                 {name: content.field_languages, value: languagesRoles, inline: true},
                 {name: content.field_english, value: englishRole, inline: true}
-            ], 
-            false, 
+            ],
+            false,
             true,
             true,
             member.user.displayAvatarURL()
@@ -246,7 +239,7 @@ module.exports = {
 
         // If something went wrong
         if (!registered) {
-            return message.reply(getMessageEmbed(config, client.translateData.index.error_something_went_wrong, "", [], false, true));
+            return message.author.send(getMessageEmbed(config, client.translateData.index.error_something_went_wrong, "", [], false, true));
         }
 
         // Update user nick
