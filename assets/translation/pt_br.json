@@ -16,9 +16,9 @@
     },
     "commands": {
         "help": {
-            "name": "help",
+            "name": "ajuda",
             "description": "Lista todos os comandos ou mostra detalhes sobre um comando específico.",
-            "usage": "[nome do comando]",
+            "usage": "`[nome do comando]`",
             "message_content_1": "Aqui, uma lista com todos os meus comandos:",
             "message_content_2": "Você pode usar",
             "message_content_3": "para mais detalhes de um comando específico!",
@@ -31,12 +31,12 @@
             "response_content_7": "segundo(s)",
             "error_content_1": "parece que eu não posso enviar uma DM para você! Sua DM está ativa?",
             "error_content_2": "isso não é um comando válido!",
-            "console_content_1": "Não pude mandar uma DM de help para"
+            "console_content_1": "Não pude mandar uma DM de ajuda para"
         },
         "reload": {
             "name": "reload",
             "description": "Recarrega um comando",
-            "usage": "[nome do comando]",
+            "usage": "`[nome do comando]`",
             "response_content_1": "O comando",
             "response_content_2": "foi recarregado!",
             "error_content_1": "Você não passou nenhum comando para recarregar",
