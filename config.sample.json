@@ -1,5 +1,6 @@
 {
     "prefix": "!",
+    "devMode": false,
     "token": "",
     "guildID": "",
     "accentColor": "#0072FF",

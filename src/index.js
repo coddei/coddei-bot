@@ -104,6 +104,9 @@ client.on("message", message => {
 
 // Actions for new member
 client.on("guildMemberAdd", member => {
+    // Ignore on devMode active
+    if (config.devMode) return;
+
     // Add default role
     role = member.guild.roles.cache.find(role => role.id == config.roles.defaultRoleID);
     member.roles.add(role);
