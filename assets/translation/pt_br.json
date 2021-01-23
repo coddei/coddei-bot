@@ -101,7 +101,7 @@
             "register_languages_description": "Selecione as reações das respectivas linguagens que você já sabe ou tem interesse em aprender 😄. Depois de selecionar as linguagens, clique no ☑️ para continuar.",
 
             "register_english": "Nivel de Inglês",
-            "register_english_description": "Selecione o seu nível de Inglês de acordo com as opções abaixo.",
+            "register_english_description": "Selecione o seu nível de Inglês de acordo com as opções abaixo. Escolha apenas uma.",
             "register_english_beginner": "Iniciante",
             "register_english_intermediate": "Intermediário",
             "register_english_advanced": "Avançado",
