@@ -116,7 +116,7 @@ const getMessageEmbed = (
 module.exports = {
     name: "commands.register.name",
     description: "commands.register.description",
-    cooldown: 5,
+    cooldown: 120,
 	execute: async (client, message, args) => {
 
         const content = client.translateData.commands.register;
