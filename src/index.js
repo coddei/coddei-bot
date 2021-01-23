@@ -85,7 +85,7 @@ client.on("message", message => {
     if (timestamps.has(message.author.id)) {
         const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
 
-        if (now < expirationTime) {
+        if (now < expirationTime && !config.devMode) {
             const timeLeft = (expirationTime - now) / 1000;
             return message.reply(`${data.response_cooldown_1} ${timeLeft.toFixed(1)} ${data.response_cooldown_2} \`${commandNameTranslated}\` ${data.response_cooldown_3}`);
         }
