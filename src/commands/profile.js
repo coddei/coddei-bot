@@ -17,10 +17,13 @@ module.exports = {
 
         var profileEmbed = null;
 
+        // If no args, get profile
         if (!args.length) {
             const url = `${client.config.apiURL}/discord/members/${message.author.id}`;
             await client.axios.get(url).then((response) => {
                 if (response.data.success) {
+                    // Get most recent avatar
+                    response.data.user.discord.displayAvatarURL = message.author.displayAvatarURL();
                     profileEmbed = getProfileEmbed(client, response.data.user);
                 }
             }).catch((e) => {
@@ -34,7 +37,9 @@ module.exports = {
             return message.channel.send(profileEmbed);
         }
 
-        if (!message.mentions.users.size) {
+        options = ["nick", "github", "portfolio", "bio"];
+
+        if (!message.mentions.users.size && !options.includes(args[0])) {
             return message.reply(content.error_content_2)
         }
 
@@ -42,11 +47,34 @@ module.exports = {
             return message.reply(content.error_content_3)
         }
 
-        const taggedUser = message.mentions.users.first();
+        if (options.includes(args[0])) {
+            const url = `${client.config.apiURL}/discord/members/${message.author.id}`;
+            await client.axios.put(url, {[args[0]]: args.slice(1).join(" ")}).then((response) => {
+                if (response.data.success) {
+                    return message.reply(content.response_content_1)
+                }
+                return message.reply(content.error_content_5)
+            }).catch((e) => {
+                console.log(e);
+            });
 
+            if (args[0] === "nick") {
+                // Update user nick
+                const member = client.guild.members.cache.find(member => member.id === message.author.id);
+                try {
+                    await member.setNickname(args.slice(1).join(" "));
+                } catch (e) {
+                    console.log(e);
+                }
+            }
+        }
+
+        const taggedUser = message.mentions.users.first();
         const url = `${client.config.apiURL}/discord/members/${taggedUser.id}`;
         await client.axios.get(url).then((response) => {
             if (response.data.success) {
+                // Get most recent avatar
+                response.data.user.discord.displayAvatarURL = taggedUser.displayAvatarURL();
                 profileEmbed = getProfileEmbed(client, response.data.user);
             }
         }).catch((e) => {

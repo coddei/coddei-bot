@@ -63,18 +63,21 @@
             "response_content_5": "**Link:**",
             "response_content_6": "**Descrição:**",
             "error_content_1": "você não passou os argumentos corretos",
-            "error_content_2": "o link que você passou não é válido"
+            "error_content_2": "o link que você passou não é válido",
+            "error_content_3": "encontrei mais de 1 link na sua mensagem, desse jeito não posso reconhecer qual o link que você quer recomendar, tente passar só um da próxima vez 😉"
         },
         "register": {
             "error": "Erro",
             "none": "Não tem",
+            "nothing": "Nenhuma",
             "profile": "Perfil",
             "name": "registrar",
-            "description": "Faz o registro do usuário no servidor",
+            "description": "Começa o processo de registro",
+            "usage": "",
             "response_content_1": "Registro",
             "response_content_2": "Registrando...",
             "response_content_3": "Você foi registrado com sucesso 😎🎉",
-            "response_content_4": "Esse é o nosso sisteam de registro, com ele você pode informar alguns detalhes sobre você como seu nick no servidor, nome, interesses, entre outras coisas.\nSe você não responder após um tempo, o registro será cancelado automaticamente.",
+            "response_content_4": "Esse é o nosso sistema de registro, nele você pode informar alguns detalhes sobre você, como o nick que você quer no servidor, nome, interesses, entre outras coisas.\nSe você não responder após um tempo, o registro será cancelado automaticamente.",
 
             "error_content_1": "Você já está registrado 😅",
             "error_content_2": "parece que eu não posso enviar uma DM para você! Sua DM está ativa?",
@@ -93,8 +96,8 @@
             "field_bio": "Bio",
             "field_name": "Nome",
             "field_nick": "Nickname",
-            "field_portfolio": "Portfólio",
-            "field_github": "Github",
+            "field_portfolio": "Portfólio (Link)",
+            "field_github": "Github (Link)",
             "field_languages": "Linguagens",
             "field_english": "Habilidade em Inglês",
 
@@ -111,12 +114,14 @@
         },
         "profile": {
             "name": "perfil",
-            "description": "Mostra o perfil de servidor do usuário",
+            "description": "Mostra o perfil de servidor do usuário. Usando o comando seguido de bio, nick, portfolio, github, você pode atualizar informações do seu perfil",
             "usage": "@usuário",
+            "response_content_1": "seu perfil foi atualizado com sucesso",
             "error_content_1": "Esse servidor não utiliza a Coddei-api 😅",
             "error_content_2": "Você não passou um usuário válido",
             "error_content_3": "Apenas 1 por vez, por favor 🙂",
-            "error_content_4": "Não foi possível acessar esse perfil"
+            "error_content_4": "Não foi possível acessar esse perfil",
+            "error_content_5": "Não foi possível atualizar o perfil"
         }
     }
 }
