@@ -124,7 +124,7 @@ module.exports = {
 
         const member = client.guild.members.cache.find(member => member.id === message.author.id);
 
-        if (isUserMember(member, config)) {
+        if (isUserMember(member, config) && !config.devMode) {
             return message.reply(getMessageEmbed(config, content.error_content_1, "", [], false, true));
         }
 
@@ -132,7 +132,10 @@ module.exports = {
         try {
             await message.author.send(getMessageEmbed(config, content.response_content_1, content.response_content_4, [], false, true));
         } catch (e) {
-            return message.reply(content.error_content_2);
+            const reply = await message.reply(content.error_content_2).catch(console.error);
+            await reply.delete({ timeout: 5000 }).catch(console.error);
+
+            return;
         }
 
         const timeoutErrorText = content.error_timeout;
