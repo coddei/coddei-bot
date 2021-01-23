@@ -1,4 +1,5 @@
 const { find, getProfileEmbed } = require("../utils");
+const { isUserMember } = require("../permissions");
 
 class CommandUseError extends Error {
     constructor(message) {
@@ -123,7 +124,7 @@ module.exports = {
 
         const member = client.guild.members.cache.find(member => member.id === message.author.id);
 
-        if (member.roles.cache.find(role => role.id === config.roles.memberRoleID)) {
+        if (isUserMember(member, config)) {
             return message.reply(getMessageEmbed(config, content.error_content_1, "", [], false, true));
         }
 
@@ -264,5 +265,5 @@ module.exports = {
         const channel = client.guild.channels.cache.find(channel => channel.id == client.config.channels.newcomersChannelID);
         channel.send(profileEmbed);
 
-	}
+    }
 };
