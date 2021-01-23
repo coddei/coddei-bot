@@ -44,7 +44,7 @@ client.on("ready", () => {
     client.user.setPresence({
         status: "online",
         activity: {
-            "name": "!help | coddei.com"
+            "name": "!ajuda | coddei.com"
         }
     })
 });
