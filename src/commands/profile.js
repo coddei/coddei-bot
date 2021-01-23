@@ -4,6 +4,7 @@ module.exports = {
     name: "commands.profile.name",
     description: "commands.profile.description",
     usage: "commands.profile.usage",
+    member: true,
     guildOnly: true,
     cooldown: 10,
 	execute: async (client, message, args) => {

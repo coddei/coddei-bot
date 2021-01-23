@@ -6,6 +6,7 @@ const axios = require('axios')
 const { MessageEmbed } = require("discord.js");
 
 const { getYear, find, getTranslateData } = require("./utils");
+const { isUserMember } = require("./permissions");
 
 const config = require("../config.json");
 const token = config.token;
@@ -56,9 +57,14 @@ client.on("message", message => {
     const args = message.content.slice(config.prefix.length).split(/ +/);
     const commandName = args.shift().toLowerCase();
     const command = client.commands.get(commandName) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
+
     if (!command) return;
 
     if (command.admin && !message.member.hasPermission("ADMINISTRATOR")) return;
+
+    if (command.member && !isUserMember(message.member, config)) {
+        return message.reply(`${data.not_a_member} ${config.prefix}${find("commands.register.name", translateData)}`);
+    }
 
     if (command.guildOnly && message.channel.type !== "text") {
         return message.reply(data.error_dm_command);

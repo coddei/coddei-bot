@@ -11,6 +11,8 @@
         "response_cooldown_3": "de novo.",
         "error_something_went_wrong": "Algo deu errado 😦, tente contatar alguém da nossa staff",
 
+        "not_a_member": "Você precisa ser um Codder para usar isso. Use ",
+
         "welcome_title": "Seja bem vindo ao servidor da Coddei",
         "welcome_description": " - Temos como objetivo promover a interação de desenvolvedores e interessados na área de programação;\n - Não tenha vergonha de interagir se você ainda estiver começando na área, até os melhores tem dificuldades;\n - E para você que já tem experiência e quer aprender mais, tente ajudar os outros, ajudar é um bom modo de aprender também;\n\nNa Coddei nós temos um sistema de registro, para que você tenha acesso as canais de conversa e ajuda você precisa usar o comando `<prefix>registrar` aqui mesmo e nosso processo de registro vai começar.\n\nNão esqueça de ler as 📜regras no canal de regras e seja bem vindo novo **Codder**."
     },
