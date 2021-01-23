@@ -5,6 +5,7 @@ module.exports = {
     name: "commands.recommend.name",
     description: "commands.recommend.description",
     usage: "commands.recommend.usage",
+    member: true,
     guildOnly: true,
     cooldown: 1,
 	execute: async (client, message, args) => {
@@ -51,7 +52,7 @@ module.exports = {
         }
         var recommendEmbed = getRecommendationEmbed(client, data);
         var recommended = false;
-        
+
         // If has api, send request to add recommendation
         if (client.config.apiURL.length) {
             try {
@@ -75,7 +76,7 @@ module.exports = {
         if (!recommended) {
             return message.reply(client.translateData.index.error_something_went_wrong);
         }
-        
+
         const channel = client.guild.channels.cache.find(channel => channel.id == client.config.channels.materialsChannelID);
         channel.send(recommendEmbed);
 	}

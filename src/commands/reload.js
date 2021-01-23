@@ -14,7 +14,7 @@ module.exports = {
         const commandName = args[0].toLowerCase();
         const command = client.commands.get(commandName)
             || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
-        
+
         if (!command) return message.channel.send(`${content.error_content_2} \`${commandName}\`, ${message.author}!`);
 
         const commandNameTranslated = find(command.name, client.translateData);

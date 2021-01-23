@@ -5,6 +5,7 @@ module.exports = {
     aliases: ["pfp", "icon"],
     description: "commands.avatar.description",
     usage: "commands.avatar.usage",
+    member: true,
     cooldown: 5,
 	execute(client, message, args) {
 
